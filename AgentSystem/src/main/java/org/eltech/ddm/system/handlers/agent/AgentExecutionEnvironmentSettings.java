@@ -1,0 +1,55 @@
+package org.eltech.ddm.system.handlers.agent;
+
+import org.eltech.ddm.environment.DataDistribution;
+import sup.ConfigReader;
+import system.agents.AgentInfo;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class AgentExecutionEnvironmentSettings implements Serializable, Cloneable {
+
+    private static final String AGENTS_INFO_PATH = "resources/agents_info.csv";
+
+    private final DataDistribution dataDistribution;
+    //private final List<String> fileList = new ArrayList<>();
+    private ArrayList<AgentInfo> agentInfoArrayList;
+
+    public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution) {
+        this.dataDistribution = dataDistribution;
+        agentInfoArrayList = ConfigReader.readFile(AGENTS_INFO_PATH);
+    }
+
+    public DataDistribution getDataDistribution() {
+        return dataDistribution;
+    }
+
+    public ArrayList<AgentInfo> getAgentInfoArrayList() {
+        return agentInfoArrayList;
+    }
+
+//    /**
+//     * Builder-like method to provide data files
+//     * @param data - file relative or absolute path
+//     * @return - current instance
+//     */
+//    public AgentExecutionEnvironmentSettings provideDatafile(String... data) {
+//        fileList.addAll(Arrays.asList(data));
+//        return this;
+//    }
+
+//    public AgentExecutionEnvironmentSettings provideDatafile(){
+//        return this;
+//    }
+
+
+
+
+//    public List<String> getFileList() {
+//        return fileList;
+//    }
+
+
+}

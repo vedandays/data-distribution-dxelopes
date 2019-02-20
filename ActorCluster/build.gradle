@@ -1,0 +1,41 @@
+
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '2.1'
+    id 'java'
+}
+lombok {
+    sha256 = "" // skip verifyLombok task
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: 'distribution'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile project(':Core')
+    compile project(':Classification')
+    compile group: 'com.typesafe.akka', name: 'akka-cluster-tools_2.12', version: '2.5.12'
+    compile group: 'com.typesafe.akka', name: 'akka-cluster-metrics_2.12', version: '2.5.12'
+    testCompile 'junit:junit:4.12'
+    testCompile project(':Clustering')
+    testCompile project(':Classification')
+    runtime project(':Clustering')
+    runtime project(':Classification')
+}
+
+mainClassName = "org.eltech.ddm.backend.runner.Runner"
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": "org.eltech.ddm.backend.runner.Runner",
+                "Class-Path": configurations.runtime.collect { "lib/$it.name" }.join(" ")
+        )
+    }
+}
