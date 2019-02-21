@@ -1,5 +1,6 @@
 package org.eltech.ddm.system.handlers.agent;
 
+import jade.wrapper.AgentContainer;
 import org.eltech.ddm.environment.DataDistribution;
 import sup.ConfigReader;
 import system.agents.AgentInfo;
@@ -16,6 +17,15 @@ public class AgentExecutionEnvironmentSettings implements Serializable, Cloneabl
     private final DataDistribution dataDistribution;
     //private final List<String> fileList = new ArrayList<>();
     private ArrayList<AgentInfo> agentInfoArrayList;
+    private AgentContainer mainContainer = null;
+
+    public void setMainContainer(AgentContainer mainContainer) {
+        this.mainContainer = mainContainer;
+    }
+
+    public AgentContainer getMainContainer() {
+        return mainContainer;
+    }
 
     public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution) {
         this.dataDistribution = dataDistribution;

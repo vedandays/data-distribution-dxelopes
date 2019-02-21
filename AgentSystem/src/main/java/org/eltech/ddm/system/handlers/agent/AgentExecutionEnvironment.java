@@ -95,7 +95,7 @@ public class AgentExecutionEnvironment  extends ExecutionEnvironment {
         mp.setParameter("profile.LOCAL_PORT","1099");
         //mp.setParameter("profile.DETECT_MAIN","False");
         //mp.setParameter("profile.CONTAINER_NAME","MAIN_CONT");
-        this.mainContainer =  rt.createMainContainer(mp);
+        this.settings.setMainContainer(rt.createMainContainer(mp));
 
     }
 }

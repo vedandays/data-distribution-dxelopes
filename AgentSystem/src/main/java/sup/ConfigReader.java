@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 /* AgentInfo info:
-   <name>,<host>,<port>,<className>,<filePath> */
+   <name>,<host>,<TcpPort>,<HttpPort>,<className>,<filePath> */
 
 public class ConfigReader {
     public static  ArrayList<AgentInfo> readFile(String filePath){
@@ -29,9 +29,10 @@ public class ConfigReader {
 
                 agentInfo.setName(lines[0]);
                 agentInfo.setHost(lines[1]);
-                agentInfo.setPort(lines[2]);
-                agentInfo.setClassName(lines[3]);
-                agentInfo.setFilePath(lines[4]);
+                agentInfo.setTcpPort(lines[2]);
+                agentInfo.setHttpPort(lines[3]);
+                agentInfo.setClassName(lines[4]);
+                agentInfo.setFilePath(lines[5]);
 
                 agentInfoArrayList.add(agentInfo);
             }
