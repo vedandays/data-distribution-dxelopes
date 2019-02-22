@@ -1,14 +1,12 @@
-package org.eltech.ddm.system.handlers.agent;
+package org.eltech.ddm.handlers;
 
 import jade.wrapper.AgentContainer;
 import org.eltech.ddm.environment.DataDistribution;
-import sup.ConfigReader;
-import system.agents.AgentInfo;
+import org.eltech.ddm.sup.ConfigReader;
+import org.eltech.ddm.agents.AgentInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class AgentExecutionEnvironmentSettings implements Serializable, Cloneable {
 

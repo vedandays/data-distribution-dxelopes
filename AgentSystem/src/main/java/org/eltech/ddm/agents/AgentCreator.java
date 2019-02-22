@@ -1,4 +1,4 @@
-package system.agents;
+package org.eltech.ddm.agents;
 
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
@@ -21,12 +21,11 @@ public class AgentCreator extends Agent {
     private AgentInfo newAgent;
     private MiningBlock block;
     private MiningInputStream data;
+    private Object[] args;
 
     public void setup() {
-        Object[] args = getArguments();
+        args = getArguments();
         newAgent = (AgentInfo) args[0];
-        block = (MiningBlock) args[1];
-        data = (MiningInputStream) args[2];
 
         addBehaviour(new Creation());
 
@@ -45,6 +44,7 @@ public class AgentCreator extends Agent {
             CreateAgent ca = new CreateAgent();
             ca.setAgentName(newAgent.getName());
             ca.setClassName(newAgent.getClassName()); //full path to agentclass
+            ca.addArguments(args);
             //ca.setContainer((ContainerID) here()); //Main-Container@192.168.31.192 - example
 
             ContainerID id = new ContainerID();

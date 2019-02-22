@@ -1,12 +1,10 @@
-package org.eltech.ddm.system.handlers.agent;
+package org.eltech.ddm.handlers;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import org.eltech.ddm.environment.ExecutionEnvironment;
-import org.eltech.ddm.handlers.ParallelExecutionException;
-import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;

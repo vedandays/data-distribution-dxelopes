@@ -1,6 +1,6 @@
-package sup;
+package org.eltech.ddm.sup;
 
-import system.agents.AgentInfo;
+import org.eltech.ddm.agents.AgentInfo;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package system.agents;
+package org.eltech.ddm.agents;
 
 import jade.core.Agent;
 
