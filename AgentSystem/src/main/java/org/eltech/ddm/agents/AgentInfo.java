@@ -6,15 +6,15 @@ package org.eltech.ddm.agents;
 public class AgentInfo {
 
 
-    /* using for unique name agent on platform */
+    /* using for unique name of agent on platform */
     private static long count = 0;
 
-    private String name;
-    private String host;
-    private String tcpPort; //<AgentName>@<ip>:<tcpPort>/JADE
-    private String httpPort; //httPport of MTP address -> http://<ip>:<httPort>
-    private String className;
-    private String filePath;
+    private String name;        //name of agent
+    private String host;        //IP address of node
+    private String tcpPort;     //TCP port -> <AgentName>@<ip>:<tcpPort>/JADE
+    private String httpPort;    //MTP/HTTP port -> http://<ip>:<httPort>
+    private String className;   //full path to classname -> <packages>.<className>
+    private String filePath;    //path to data on node
 
     public AgentInfo() {
         count++;

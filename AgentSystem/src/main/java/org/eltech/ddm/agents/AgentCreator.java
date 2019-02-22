@@ -13,14 +13,11 @@ import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
-import org.eltech.ddm.inputdata.MiningInputStream;
-import org.eltech.ddm.miningcore.algorithms.MiningBlock;
+
 
 public class AgentCreator extends Agent {
 
     private AgentInfo newAgent;
-    private MiningBlock block;
-    private MiningInputStream data;
     private Object[] args;
 
     public void setup() {

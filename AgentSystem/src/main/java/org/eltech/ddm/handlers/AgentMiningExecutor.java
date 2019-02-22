@@ -2,6 +2,7 @@ package org.eltech.ddm.handlers;
 
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.MiningBlock;
 import org.eltech.ddm.miningcore.algorithms.MiningExecutor;
@@ -10,7 +11,7 @@ import org.eltech.ddm.agents.AgentInfo;
 
 public class AgentMiningExecutor extends MiningExecutor {
 
-    private EMiningModel model;
+    private ExecuteResult result = null;
     private AgentExecutionEnvironmentSettings settings;
     private AgentInfo agentInfo;
 
@@ -28,7 +29,7 @@ public class AgentMiningExecutor extends MiningExecutor {
 
          AgentModerator */
 
-        Object[] args = {agentInfo, model};
+        Object[] args = {agentInfo, this, model};
 
         startRemoteAgent(args);
 
@@ -39,11 +40,22 @@ public class AgentMiningExecutor extends MiningExecutor {
 
         /* ??????????????
         * Ожидание пока model будет не null и потом return. */
-        return model;
+
+        //TODO: Handler result Failed/Result
+
+        while (result == null){
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result.getModel();
     }
 
-    public void setModel(EMiningModel model) {
-        this.model = model;
+    public void setResult(ExecuteResult result) {
+        this.result = result;
     }
 
     private AgentMiningExecutor startRemoteAgent(Object[] args){
