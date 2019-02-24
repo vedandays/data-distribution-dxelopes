@@ -68,7 +68,7 @@ public class AgentMiningExecutor extends MiningExecutor {
         this.result = result;
     }
 
-    private AgentMiningExecutor startRemoteAgent(Object[] args){
+    private void startRemoteAgent(Object[] args){
 
         try {
             AgentController ac = settings.getMainContainer().createNewAgent(agentInfo.getName()+"-Moderator-" +
@@ -78,8 +78,5 @@ public class AgentMiningExecutor extends MiningExecutor {
         } catch (StaleProxyException e) {
             e.printStackTrace();
         }
-
-
-        return null;
     }
 }
