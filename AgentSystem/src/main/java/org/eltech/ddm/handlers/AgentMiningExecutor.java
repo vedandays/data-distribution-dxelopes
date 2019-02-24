@@ -3,6 +3,8 @@ package org.eltech.ddm.handlers;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import org.eltech.ddm.common.ExecuteResult;
+import org.eltech.ddm.environment.DataDistribution;
+import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.MiningBlock;
 import org.eltech.ddm.miningcore.algorithms.MiningExecutor;
@@ -14,11 +16,19 @@ public class AgentMiningExecutor extends MiningExecutor {
     private ExecuteResult result = null;
     private AgentExecutionEnvironmentSettings settings;
     private AgentInfo agentInfo;
+    private DataDistribution dist;
 
-    protected AgentMiningExecutor(MiningBlock block, AgentExecutionEnvironmentSettings settings, AgentInfo agentInfo) {
+
+    protected AgentMiningExecutor(MiningBlock block,
+                                  AgentExecutionEnvironmentSettings settings,
+                                  AgentInfo agentInfo,
+                                  DataDistribution dist,
+                                  MiningInputStream data) {
         super(block);
         this.settings = settings;
         this.agentInfo = agentInfo;
+        this.dist = dist;
+        this.data = data;
     }
 
     @Override
