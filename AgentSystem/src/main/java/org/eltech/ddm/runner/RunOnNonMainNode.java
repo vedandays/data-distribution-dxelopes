@@ -4,7 +4,9 @@ import jade.Boot;
 
 public class RunOnNonMainNode {
     public static void main(String[] args) {
-        String[] arg = {"-port 1098"};
+        // "-gui"
+        String[] arg = {"-port 1098"}; //for tests
         new Boot().main(arg);
+        //new new Boot().main(args);
     }
 }
