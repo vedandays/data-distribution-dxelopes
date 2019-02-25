@@ -2,6 +2,7 @@ package org.eltech.ddm.handlers;
 
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.inputdata.MiningInputStream;
@@ -17,6 +18,7 @@ public class AgentMiningExecutor extends MiningExecutor {
     private AgentExecutionEnvironmentSettings settings;
     private AgentInfo agentInfo;
     private DataDistribution dist;
+    private ExecuteJob executeJob;
 
 
     protected AgentMiningExecutor(MiningBlock block,
@@ -38,8 +40,9 @@ public class AgentMiningExecutor extends MiningExecutor {
          Emining model. Созданный агент умирает?
 
          AgentModerator */
+        executeJob = new ExecuteJob(block, model.getSettings(), model.getClass(), data, dist);
 
-        Object[] args = {agentInfo, this, model};
+        Object[] args = {agentInfo, this, executeJob};
 
         startRemoteAgent(args);
 

@@ -17,14 +17,14 @@ public class AgentModerator extends Agent {
     private Object[] args;
     private AgentInfo agent;
     private ExecuteJob executeJob;
-    private AgentMiningExecutor executor;
+    private AgentMiningExecutor thisExecutor;
 
     public void setup() {
 
         args = getArguments();
 
         agent = (AgentInfo) args[0];
-        executor = (AgentMiningExecutor) args[1];
+        thisExecutor = (AgentMiningExecutor) args[1];
         executeJob = (ExecuteJob) args[2];
 
         addBehaviour(new SendingMsg());
@@ -67,6 +67,8 @@ public class AgentModerator extends Agent {
 
             if (msg != null) {
 
+                //TODO: instaceof ExecuteResult...
+
                 try{
                     result = (ExecuteResult) msg.getContentObject();
                     System.out.println("Received a message from " + msg.getSender().getLocalName());
@@ -74,7 +76,8 @@ public class AgentModerator extends Agent {
                 } catch (UnreadableException e){ e.printStackTrace();}
 
 
-                executor.setResult(result);
+                thisExecutor.setResult(result);
+
                 finish = true;
             }
             else {
