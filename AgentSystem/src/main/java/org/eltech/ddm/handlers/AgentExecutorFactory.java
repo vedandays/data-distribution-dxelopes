@@ -32,7 +32,7 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
         * Создаётся агент, который отправляет только на 1 платформу запрос на создание 1 агента.
         * AgentCreator*/
 
-        //TODO: возможно надо спрятать локику внутри AgentCreator
+        //TODO: возможно надо спрятать логику внутри AgentCreator
         Object[] args = {agentInfo, block};
 
         createRemoteAgent(args, agentInfo);

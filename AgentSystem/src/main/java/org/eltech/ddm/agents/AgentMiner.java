@@ -24,8 +24,6 @@ import java.util.Set;
 
 public class AgentMiner extends Agent {
 
-    private Object[] args;
-    private MiningBlock block;
     private MiningInputStream data = null;
 
     private ExecuteResult executeResult;
@@ -34,10 +32,12 @@ public class AgentMiner extends Agent {
     private ACLMessage answ;
 
     public void setup(){
-        args = getArguments();
-        block = (MiningBlock) args[1];
+        Object[] args = getArguments();
 
-        if(args.length == 3) data = (MiningInputStream) args[2];
+        System.out.println(args.length);
+
+
+        System.out.println("Miner here");
 
         addBehaviour(new ReceiveModel());
 

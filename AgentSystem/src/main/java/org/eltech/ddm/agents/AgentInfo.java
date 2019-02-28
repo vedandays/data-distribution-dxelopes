@@ -3,7 +3,9 @@ package org.eltech.ddm.agents;
 
 /* Agents info */
 
-public class AgentInfo {
+import java.io.Serializable;
+
+public class AgentInfo implements Serializable {
 
 
     /* using for unique name of agent on platform */
@@ -72,5 +74,15 @@ public class AgentInfo {
         return className;
     }
 
-
+    @Override
+    public String toString() {
+        return "AgentInfo{" +
+                "name='" + name + '\'' +
+                ", host='" + host + '\'' +
+                ", tcpPort='" + tcpPort + '\'' +
+                ", httpPort='" + httpPort + '\'' +
+                ", className='" + className + '\'' +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
 }

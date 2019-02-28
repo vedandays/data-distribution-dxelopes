@@ -21,16 +21,20 @@ public class AgentCreator extends Agent {
     private Object[] args;
 
     public void setup() {
+        System.out.println("\nAgentCreator " + this.getAID() + " is started.\n");
+
         args = getArguments();
         newAgent = (AgentInfo) args[0];
 
-        addBehaviour(new Creation());
-
+        //SendMessages a = new SendMessages();
+        Check a = new Check();
+        addBehaviour(a);
     }
 
-    class Creation extends OneShotBehaviour {
 
-        public void action() {
+    class Check extends OneShotBehaviour {
+        public void action(){
+
             SLCodec codec = new SLCodec();
             ContentManager cm = new ContentManager();
 
@@ -41,6 +45,7 @@ public class AgentCreator extends Agent {
             CreateAgent ca = new CreateAgent();
             ca.setAgentName(newAgent.getName());
             ca.setClassName(newAgent.getClassName()); //full path to agentclass
+            //ca.setClassName("jade.tools.DummyAgent.DummyAgent");
             ca.addArguments(args);
             //ca.setContainer((ContainerID) here()); //Main-Container@192.168.31.192 - example
 
@@ -53,9 +58,12 @@ public class AgentCreator extends Agent {
             AID r = new AID("ams@" + newAgent.getHost() + ":" + newAgent.getTcpPort() + "/JADE");
             r.addAddresses("http://" + newAgent.getHost() + ":" + newAgent.getHttpPort() +  "/acc");
 
+
             request.addReceiver(r);
             request.setOntology(JADEManagementOntology.getInstance().getName());
             request.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);
+
+            System.out.println(request);
 
             try {
                 cm.fillContent(request, new Action(getAMS(), ca));
@@ -73,8 +81,8 @@ public class AgentCreator extends Agent {
                 e.printStackTrace();
             }
 
-            myAgent.doDelete(); //kill
-
         }
+
     }
+
 }

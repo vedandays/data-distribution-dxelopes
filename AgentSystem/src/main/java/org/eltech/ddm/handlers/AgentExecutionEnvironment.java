@@ -97,7 +97,8 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
     private void initJadePlatform() {
         Runtime rt = Runtime.instance();
         Profile mp = new ProfileImpl();
-        mp.setParameter("profile.LOCAL_PORT", "1099"); //проверить без порта
+        //mp.setParameter("profile.LOCAL_PORT", "1099"); //проверить без порта
+        mp.setParameter(ProfileImpl.MAIN_HOST, "localhost");
         //mp.setParameter("profile.DETECT_MAIN","False");
         //mp.setParameter("profile.CONTAINER_NAME","MAIN_CONT");
         this.settings.setMainContainer(rt.createMainContainer(mp));
