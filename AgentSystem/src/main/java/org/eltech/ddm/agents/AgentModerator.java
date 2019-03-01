@@ -38,7 +38,7 @@ public class AgentModerator extends Agent {
         public void action() {
 
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-            AID receiverAID = new AID(agent.getName() +"@"+ agent.getHost() + ":" + agent.getTcpPort() + "/JADE");
+            AID receiverAID = new AID(agent.getName() +"@"+ agent.getIp() + ":" + agent.getTcpPort() + "/JADE");
             receiverAID.addAddresses("http://" + agent.getHost() + ":" + agent.getHttpPort() +  "/acc");
             msg.addReceiver(receiverAID);
             msg.setContent(agent.getFilePath());
@@ -49,7 +49,7 @@ public class AgentModerator extends Agent {
             }
             send(msg);
 
-            System.out.println("Sent a message to " + agent.getName() +"@"+ agent.getHost() + ":" +
+            System.out.println("Sent a message to " + agent.getName() +"@"+ agent.getIp() + ":" +
                     agent.getTcpPort() + "/JADE");
             addBehaviour(new ReceiveMsg());
 
@@ -68,6 +68,7 @@ public class AgentModerator extends Agent {
             if (msg != null) {
 
                 //TODO: instaceof ExecuteResult...
+                System.out.println(msg.toString());
 
                 try{
                     result = (ExecuteResult) msg.getContentObject();

@@ -28,11 +28,12 @@ public class ConfigReader {
                 AgentInfo agentInfo = new AgentInfo();
 
                 agentInfo.setName(lines[0]);
-                agentInfo.setHost(lines[1]);
-                agentInfo.setTcpPort(lines[2]);
-                agentInfo.setHttpPort(lines[3]);
-                agentInfo.setClassName(lines[4]);
-                agentInfo.setFilePath(lines[5]);
+                agentInfo.setIp(lines[1]);
+                agentInfo.setHost(lines[2]);
+                agentInfo.setTcpPort(lines[3]);
+                agentInfo.setHttpPort(lines[4]);
+                agentInfo.setClassName(lines[5]);
+                agentInfo.setFilePath(lines[6]);
 
                 agentInfoArrayList.add(agentInfo);
             }

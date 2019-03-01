@@ -12,9 +12,10 @@ public class AgentInfo implements Serializable {
     private static long count = 0;
 
     private String name;        //name of agent
-    private String host;        //IP address of node
+    private String ip;          //IP address of node
+    private String host;        //Host is localhost
     private String tcpPort;     //TCP port -> <AgentName>@<ip>:<tcpPort>/JADE
-    private String httpPort;    //MTP/HTTP port -> http://<ip>:<httPort>
+    private String httpPort;    //MTP/HTTP port -> http://<localhost>:<httPort>
     private String className;   //full path to classname -> <packages>.<className>
     private String filePath;    //path to data on node
 
@@ -46,8 +47,8 @@ public class AgentInfo implements Serializable {
         this.name = name;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public void setHttpPort(String httPport) {
@@ -62,8 +63,8 @@ public class AgentInfo implements Serializable {
         return name;
     }
 
-    public String getHost() {
-        return host;
+    public String getIp() {
+        return ip;
     }
 
     public String getHttpPort() {
@@ -74,11 +75,19 @@ public class AgentInfo implements Serializable {
         return className;
     }
 
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
     @Override
     public String toString() {
         return "AgentInfo{" +
                 "name='" + name + '\'' +
-                ", host='" + host + '\'' +
+                ", ip='" + ip + '\'' +
                 ", tcpPort='" + tcpPort + '\'' +
                 ", httpPort='" + httpPort + '\'' +
                 ", className='" + className + '\'' +

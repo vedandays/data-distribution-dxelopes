@@ -32,9 +32,6 @@ public class AgentMiner extends Agent {
     private ACLMessage answ;
 
     public void setup(){
-        Object[] args = getArguments();
-
-        System.out.println(args.length);
 
 
         System.out.println("Miner here");
@@ -60,6 +57,8 @@ public class AgentMiner extends Agent {
                 } catch (UnreadableException e) {
                     e.printStackTrace();
                 }
+
+                System.out.println(myAgent.getAID().getName() + " received a message");
                 finish = true;
 
                 addBehaviour(new Execute());

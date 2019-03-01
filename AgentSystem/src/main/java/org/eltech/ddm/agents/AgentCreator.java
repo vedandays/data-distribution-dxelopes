@@ -46,26 +46,60 @@ public class AgentCreator extends Agent {
             ca.setAgentName(newAgent.getName());
             ca.setClassName(newAgent.getClassName()); //full path to agentclass
             //ca.setClassName("jade.tools.DummyAgent.DummyAgent");
-            ca.addArguments(args);
+            //ca.addArguments(args);
             //ca.setContainer((ContainerID) here()); //Main-Container@192.168.31.192 - example
 
             ContainerID id = new ContainerID();
             id.setName("Main-Container"); //always Main-Container
-            id.setAddress(newAgent.getHost());
+            id.setAddress(newAgent.getIp());
             ca.setContainer(id); //Main-Container@192.168.31.192 - example
 
             ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-            AID r = new AID("ams@" + newAgent.getHost() + ":" + newAgent.getTcpPort() + "/JADE");
+            AID r = new AID("ams@" + newAgent.getIp() + ":" + newAgent.getTcpPort() + "/JADE");
             r.addAddresses("http://" + newAgent.getHost() + ":" + newAgent.getHttpPort() +  "/acc");
+            //r.addAddresses("http://entera:7778/acc");
 
 
             request.addReceiver(r);
             request.setOntology(JADEManagementOntology.getInstance().getName());
             request.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);
 
-            System.out.println(request);
 
-            try {
+//            SLCodec codec = new SLCodec();
+//            ContentManager cm = new ContentManager();
+//
+//            cm.registerLanguage(codec, FIPANames.ContentLanguage.FIPA_SL0);
+//            cm.registerOntology(FIPAManagementOntology.getInstance());
+//            cm.registerOntology(JADEManagementOntology.getInstance());
+//
+//            CreateAgent ca = new CreateAgent();
+//            ca.setAgentName("dddddddd");
+//            //ca.setClassName("jade.tools.DummyAgent.DummyAgent"); //full path to agentclass
+//            ca.setClassName("org.eltech.ddm.agents.AgentMiner"); //full path to agentclass
+//            //ca.setContainer((ContainerID) here()); //Main-Container@192.168.31.192 - example
+//            ContainerID id = new ContainerID();
+//            id.setName("Main-Container");
+//            id.setAddress("192.168.31.192");
+//            ca.setContainer(id); //Main-Container@192.168.31.192 - example
+//            System.out.println("HERE: " + here());
+//            System.out.println("ID: " + id);
+//
+//            ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
+//            //request.addReceiver(getAMS()); //address AMS
+//            AID r = new AID("ams@192.168.31.192:1098/JADE");
+//            r.addAddresses("http://entera:7778/acc");
+//            System.out.println(getAMS());
+//            System.out.println(r);
+//            System.out.println("SENDER: " + request.getSender());
+//            request.addReceiver(r);
+//            request.setOntology(JADEManagementOntology.getInstance().getName());
+//            request.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);
+//
+//
+//
+//
+            try
+            {
                 cm.fillContent(request, new Action(getAMS(), ca));
                 //send(request);
                 addBehaviour(new AchieveREInitiator(this.myAgent, request) {
@@ -80,6 +114,8 @@ public class AgentCreator extends Agent {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            System.out.println(request);
 
         }
 
