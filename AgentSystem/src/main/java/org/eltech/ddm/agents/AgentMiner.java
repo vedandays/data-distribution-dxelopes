@@ -3,8 +3,13 @@ package org.eltech.ddm.agents;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import jade.proto.AchieveREResponder;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
@@ -34,7 +39,32 @@ public class AgentMiner extends Agent {
     public void setup(){
 
 
-        System.out.println("Miner here");
+        System.out.println("Agent " + this.getAID().getLocalName() + " is started.\n");
+
+
+        //TODO: improve Template, refactoring behaviours
+
+        MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+        addBehaviour(new AchieveREResponder(this,mt){
+
+            @Override
+            protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
+                System.out.println("Agent " + getLocalName() + " received from " + request.getSender().getName() +
+                                " RESPONDER");
+                ACLMessage agree = request.createReply();
+                agree.setPerformative(ACLMessage.INFORM);
+                return agree;
+            }
+
+            @Override
+            protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
+                System.out.println("fail");
+                ACLMessage agree = request.createReply();
+                agree.setPerformative(ACLMessage.FAILURE);
+                return agree;
+            }
+        });
+
 
         addBehaviour(new ReceiveModel());
 
@@ -46,7 +76,10 @@ public class AgentMiner extends Agent {
 
         public  void action(){
 
-            //TODO: Template
+
+
+
+
 
             ACLMessage msg = myAgent.receive();
 
@@ -58,7 +91,7 @@ public class AgentMiner extends Agent {
                     e.printStackTrace();
                 }
 
-                System.out.println(myAgent.getAID().getName() + " received a message");
+                System.out.println(myAgent.getAID().getName() + " received a message NORMAL");
                 finish = true;
 
                 addBehaviour(new Execute());
