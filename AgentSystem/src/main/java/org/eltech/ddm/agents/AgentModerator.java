@@ -1,10 +1,8 @@
 package org.eltech.ddm.agents;
 
-import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREInitiator;
@@ -19,6 +17,7 @@ public class AgentModerator extends Agent {
     private Object[] args;
     private AgentInfo agent;
     private ExecuteJob executeJob;
+    private ExecuteResult result;
     private AgentMiningExecutor thisExecutor;
 
     public void setup() {
@@ -37,8 +36,6 @@ public class AgentModerator extends Agent {
 
     class SendingMsg extends OneShotBehaviour{
 
-        //TODO: logger, ArchiveREinitiator
-
         public void action() {
 
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
@@ -51,69 +48,38 @@ public class AgentModerator extends Agent {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //send(msg);
-
-            //TODO: refactoring behaviours
 
             try
             {
                 //send(request);
                 addBehaviour(new AchieveREInitiator(this.myAgent, msg) {
+
+                    protected void handleAgree(ACLMessage agree){
+                        System.out.println("\nMessage delivered");
+                    }
+
                     protected void handleInform(ACLMessage inform) {
-                        System.out.println("msg delivered");
+                        try{
+                            result = (ExecuteResult) inform.getContentObject();
+                            System.out.println("Received a message from " + inform.getSender().getLocalName());
+
+                        } catch (UnreadableException e){ e.printStackTrace();}
+
+
+                        thisExecutor.setResult(result);
                     }
 
                     protected void handleFailure(ACLMessage failure) {
-                        System.out.println("msg not delivered");
+                        System.out.println("\nMessage not delivered");
                     }
+
+
                 });
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            System.out.println("Agent " + myAgent.getLocalName() + " Sent a message to " + agent.getName() +"@"+
-                    agent.getIp() + ":" +
-                    agent.getTcpPort() + "/JADE");
-            addBehaviour(new ReceiveMsg());
-
         }
-    }
-
-    class ReceiveMsg extends SimpleBehaviour {
-
-        private boolean finish = false;
-        private ExecuteResult result;
-
-        public void action() {
-
-            ACLMessage msg = myAgent.receive();
-
-            if (msg != null) {
-
-                //TODO: instaceof ExecuteResult...
-
-
-                try{
-                    result = (ExecuteResult) msg.getContentObject();
-                    System.out.println("Received a message from " + msg.getSender().getLocalName());
-
-                } catch (UnreadableException e){ e.printStackTrace();}
-
-
-                thisExecutor.setResult(result);
-
-                finish = true;
-            }
-            else {
-                block();
-            }
-        }
-
-        public boolean done() {
-            return finish;
-        }
-
-
     }
 
 }

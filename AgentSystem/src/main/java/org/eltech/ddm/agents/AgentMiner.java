@@ -35,14 +35,13 @@ public class AgentMiner extends Agent {
     private ExecuteJob executeJob;
 
     private ACLMessage answ;
+    //private ACLMessage req;
 
     public void setup(){
 
 
         System.out.println("Agent " + this.getAID().getLocalName() + " is started.\n");
 
-
-        //TODO: improve Template, refactoring behaviours
 
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         addBehaviour(new AchieveREResponder(this,mt){
@@ -51,62 +50,37 @@ public class AgentMiner extends Agent {
             protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
                 System.out.println("Agent " + getLocalName() + " received from " + request.getSender().getName() +
                                 " RESPONDER");
+
+                answ = request.createReply();
+
+                try {
+                    executeJob = (ExecuteJob) request.getContentObject();
+                } catch (UnreadableException e) {
+                    e.printStackTrace();
+                }
+
+
+                addBehaviour(new Execute());
+
                 ACLMessage agree = request.createReply();
-                agree.setPerformative(ACLMessage.INFORM);
+                agree.setPerformative(ACLMessage.AGREE);
                 return agree;
             }
 
             @Override
             protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-                System.out.println("fail");
-                ACLMessage agree = request.createReply();
-                agree.setPerformative(ACLMessage.FAILURE);
-                return agree;
+                return null;
             }
         });
 
 
-        addBehaviour(new ReceiveModel());
-
-    }
-
-    class ReceiveModel extends SimpleBehaviour{
-
-        private boolean finish = false;
-
-        public  void action(){
-
-
-
-
-
-
-            ACLMessage msg = myAgent.receive();
-
-            if(msg != null){
-                answ = msg.createReply();
-                try {
-                        executeJob = (ExecuteJob) msg.getContentObject();
-                } catch (UnreadableException e) {
-                    e.printStackTrace();
-                }
-
-                System.out.println(myAgent.getAID().getName() + " received a message NORMAL");
-                finish = true;
-
-                addBehaviour(new Execute());
-
-            } else { block(); }
-
-        }
-        public  boolean done(){
-            return finish;
-        }
     }
 
     class Execute extends OneShotBehaviour{
 
         public void action(){
+
+            System.out.println("Executing....");
 
             try {
                 changeMiningSettings((MiningCsvStream) executeJob.getInputStream(), executeJob.getBlock().getFunctionSettings());
@@ -213,6 +187,9 @@ public class AgentMiner extends Agent {
     class SendResult extends OneShotBehaviour{
 
         public void action(){
+
+            answ.setPerformative(ACLMessage.INFORM);
+
             try {
                 answ.setContentObject(executeResult);
             } catch (IOException e) {
@@ -220,6 +197,8 @@ public class AgentMiner extends Agent {
             }
 
             send(answ);
+
+            System.out.println(myAgent.getAID().getLocalName() + " sent a message.");
         }
     }
 }
