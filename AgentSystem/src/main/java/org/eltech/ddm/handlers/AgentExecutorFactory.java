@@ -2,7 +2,7 @@ package org.eltech.ddm.handlers;
 
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
-import org.eltech.ddm.environment.DataDistribution;
+import org.eltech.ddm.agents.AgentCreator;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.algorithms.MiningBlock;
 import org.eltech.ddm.agents.AgentInfo;
@@ -54,7 +54,7 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
 
         try {
             AgentController ac = settings.getMainContainer().createNewAgent(agentInfo.getName()+"-Creator-" +
-                    + agentInfo.getCount(), "org.eltech.ddm.agents.AgentCreator", args);
+                    + agentInfo.getCount(), AgentCreator.class.getName(), args);
 
             ac.start();
         } catch (StaleProxyException e) {

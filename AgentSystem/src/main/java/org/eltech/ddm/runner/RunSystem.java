@@ -1,5 +1,6 @@
 package org.eltech.ddm.runner;
 
+import org.eltech.ddm.agents.AgentModerator;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithm;
@@ -59,6 +60,8 @@ public class RunSystem {
         try {
             createMiningSettings();
             ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.CENTRALIZATION).execute();
+
+            System.out.println(resultModel);
 
         } catch (Exception e) {
             e.printStackTrace();

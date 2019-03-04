@@ -2,8 +2,10 @@ package org.eltech.ddm.handlers;
 
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import org.eltech.ddm.agents.AgentModerator;
 import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
+import org.eltech.ddm.common.JobFailed;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.MiningException;
@@ -14,7 +16,7 @@ import org.eltech.ddm.agents.AgentInfo;
 
 public class AgentMiningExecutor extends MiningExecutor {
 
-    private ExecuteResult result = null;
+    private Object receivedMessage = null;
     private AgentExecutionEnvironmentSettings settings;
     private AgentInfo agentInfo;
     private DataDistribution dist;
@@ -54,9 +56,7 @@ public class AgentMiningExecutor extends MiningExecutor {
         /* ??????????????
         * Ожидание пока model будет не null и потом return. */
 
-        //TODO: Handler result Failed/Result
-
-        while (result == null){
+        while (receivedMessage == null){
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -64,18 +64,22 @@ public class AgentMiningExecutor extends MiningExecutor {
             }
         }
 
-        return result.getModel();
+        if(receivedMessage instanceof ExecuteResult) return ((ExecuteResult) receivedMessage).getModel();
+
+
+        return null;
     }
 
-    public void setResult(ExecuteResult result) {
-        this.result = result;
+
+    public void setReceivedMessage(Object receivedMessage) {
+        this.receivedMessage = receivedMessage;
     }
 
     private void startRemoteAgent(Object[] args){
 
         try {
             AgentController ac = settings.getMainContainer().createNewAgent(agentInfo.getName()+"-Moderator-" +
-                    + agentInfo.getCount(), "org.eltech.ddm.agents.AgentModerator", args);
+                    + agentInfo.getCount(), AgentModerator.class.getName(), args);
 
             ac.start();
         } catch (StaleProxyException e) {

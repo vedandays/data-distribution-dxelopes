@@ -17,7 +17,7 @@ public class AgentModerator extends Agent {
     private Object[] args;
     private AgentInfo agent;
     private ExecuteJob executeJob;
-    private ExecuteResult result;
+    private Object receivedMessage = null;
     private AgentMiningExecutor thisExecutor;
 
     public void setup() {
@@ -43,6 +43,7 @@ public class AgentModerator extends Agent {
             receiverAID.addAddresses("http://" + agent.getHost() + ":" + agent.getHttpPort() +  "/acc");
             msg.addReceiver(receiverAID);
             msg.setContent(agent.getFilePath());
+
             try {
                 msg.setContentObject(executeJob);
             } catch (IOException e) {
@@ -51,7 +52,6 @@ public class AgentModerator extends Agent {
 
             try
             {
-                //send(request);
                 addBehaviour(new AchieveREInitiator(this.myAgent, msg) {
 
                     protected void handleAgree(ACLMessage agree){
@@ -59,26 +59,32 @@ public class AgentModerator extends Agent {
                     }
 
                     protected void handleInform(ACLMessage inform) {
-                        try{
-                            result = (ExecuteResult) inform.getContentObject();
-                            System.out.println("Received a message from " + inform.getSender().getLocalName());
-
-                        } catch (UnreadableException e){ e.printStackTrace();}
-
-
-                        thisExecutor.setResult(result);
+                        System.out.println("\nReceived a INFORM message from " + inform.getSender().getLocalName() + "\n");
+                        setIntoExecutor(inform);
                     }
 
                     protected void handleFailure(ACLMessage failure) {
                         System.out.println("\nMessage not delivered");
                     }
 
-
+                    protected void handleOutOfSequence(ACLMessage msg) {
+                        System.out.println("\nReceived a error message from " + msg.getSender().getLocalName() + "\n");
+                        setIntoExecutor(msg);
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+        }
+
+        public void setIntoExecutor(ACLMessage msg){
+
+            try{
+                receivedMessage = msg.getContentObject();
+            } catch (UnreadableException e){ e.printStackTrace();}
+
+            thisExecutor.setReceivedMessage(receivedMessage);
         }
     }
 

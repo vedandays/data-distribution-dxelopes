@@ -13,6 +13,7 @@ import jade.proto.AchieveREResponder;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
+import org.eltech.ddm.common.JobFailed;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
@@ -23,6 +24,7 @@ import org.eltech.ddm.miningcore.miningmodel.Distributable;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningfunctionsettings.MiningFunctionSettings;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
@@ -33,6 +35,7 @@ public class AgentMiner extends Agent {
 
     private ExecuteResult executeResult;
     private ExecuteJob executeJob;
+    private JobFailed jobFailed;
 
     private ACLMessage answ;
     //private ACLMessage req;
@@ -42,14 +45,13 @@ public class AgentMiner extends Agent {
 
         System.out.println("Agent " + this.getAID().getLocalName() + " is started.\n");
 
-
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
         addBehaviour(new AchieveREResponder(this,mt){
 
             @Override
             protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
                 System.out.println("Agent " + getLocalName() + " received from " + request.getSender().getName() +
-                                " RESPONDER");
+                        " RESPONDER");
 
                 answ = request.createReply();
 
@@ -76,7 +78,18 @@ public class AgentMiner extends Agent {
 
     }
 
+    class StartState extends OneShotBehaviour {
+
+        public void action(){
+
+
+
+        }
+    }
+
     class Execute extends OneShotBehaviour{
+
+        private boolean finish = false;
 
         public void action(){
 
@@ -86,7 +99,14 @@ public class AgentMiner extends Agent {
                 changeMiningSettings((MiningCsvStream) executeJob.getInputStream(), executeJob.getBlock().getFunctionSettings());
             } catch (MiningException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                System.out.println("fail");
+                //addBehaviour(new SendFailResult());
+                jobFailed = new JobFailed(e);
+                sendResult(jobFailed, ACLMessage.REFUSE);
+                return;
             }
+
             EMiningModel model = null;
             try {
                 model = executeJob.getMiningModel().getConstructor(EMiningFunctionSettings.class).
@@ -108,16 +128,25 @@ public class AgentMiner extends Agent {
             if (model instanceof Distributable) {
                 ((Distributable) model).setDistributionType(executeJob.getDataDistribution());
             }
-            MiningBlock block = reinitBlock(executeJob.getInputStream(), executeJob.getBlock());
+            MiningBlock block;
             try {
+                block = reinitBlock(executeJob.getInputStream(), executeJob.getBlock());
                 model = block.run(model);
             } catch (MiningException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                System.out.println("fail");
+                //addBehaviour(new SendFailResult());
+                jobFailed = new JobFailed(e);
+                sendResult(jobFailed, ACLMessage.FAILURE);
+                return;
             }
 
             executeResult = new ExecuteResult(model);
+            sendResult(executeResult, ACLMessage.INFORM);
 
-            addBehaviour(new SendResult());
+            //addBehaviour(new SendResult());
+
 
         }
 
@@ -182,16 +211,28 @@ public class AgentMiner extends Agent {
                 ((ClassificationFunctionSettings) settings).verify();
             }
         }
-    }
 
-    class SendResult extends OneShotBehaviour{
+        private void sendResult(JobFailed jf, int performative) {
 
-        public void action(){
-
-            answ.setPerformative(ACLMessage.INFORM);
+            answ.setPerformative(performative);
 
             try {
-                answ.setContentObject(executeResult);
+                answ.setContentObject(jf);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            send(answ);
+
+            System.out.println(myAgent.getAID().getLocalName() + " sent a fail message.");
+        }
+
+        private void sendResult(ExecuteResult er, int performative) {
+
+            answ.setPerformative(performative);
+
+            try {
+                answ.setContentObject(er);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -200,5 +241,7 @@ public class AgentMiner extends Agent {
 
             System.out.println(myAgent.getAID().getLocalName() + " sent a message.");
         }
+
+
     }
 }

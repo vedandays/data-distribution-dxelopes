@@ -5,13 +5,13 @@ import java.io.Serializable;
 
 
 public class JobFailed implements Serializable {
-    private final MiningException exception;
+    private final Exception exception;
 
-    public JobFailed(MiningException exception) {
+    public JobFailed(Exception exception) {
         this.exception = exception;
     }
 
-    public MiningException getException() {
+    public Exception getException() {
         return exception;
     }
 }
