@@ -11,6 +11,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREResponder;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
+import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.common.JobFailed;
@@ -22,11 +23,14 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.Distributable;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
+import org.eltech.ddm.runner.Serialz;
+import org.eltech.ddm.runner.TestObj;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningfunctionsettings.MiningFunctionSettings;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.Set;
 
 public class AgentMiner extends Agent {
@@ -143,6 +147,7 @@ public class AgentMiner extends Agent {
             }
 
             executeResult = new ExecuteResult(model);
+            //System.out.println(model);
             sendResult(executeResult, ACLMessage.INFORM);
 
             //addBehaviour(new SendResult());
@@ -233,6 +238,7 @@ public class AgentMiner extends Agent {
 
             try {
                 answ.setContentObject(er);
+                System.out.println("MINER: "+er.getModel());
             } catch (IOException e) {
                 e.printStackTrace();
             }

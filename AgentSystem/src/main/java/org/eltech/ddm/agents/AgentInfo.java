@@ -10,6 +10,7 @@ public class AgentInfo implements Serializable {
 
     /* using for unique name of agent on platform */
     private static long count = 0;
+    private long id;
 
     private String name;        //name of agent
     private String ip;          //IP address of node
@@ -21,6 +22,7 @@ public class AgentInfo implements Serializable {
 
     public AgentInfo() {
         count++;
+        this.id = count;
     }
 
     public void setTcpPort(String tcpPort) {
@@ -81,6 +83,10 @@ public class AgentInfo implements Serializable {
 
     public String getHost() {
         return host;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override

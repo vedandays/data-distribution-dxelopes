@@ -32,7 +32,6 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
         * Создаётся агент, который отправляет только на 1 платформу запрос на создание 1 агента.
         * AgentCreator*/
 
-        //TODO: возможно надо спрятать логику внутри AgentCreator
         Object[] args = {agentInfo, block};
 
         createRemoteAgent(args, agentInfo);
@@ -54,7 +53,7 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
 
         try {
             AgentController ac = settings.getMainContainer().createNewAgent(agentInfo.getName()+"-Creator-" +
-                    + agentInfo.getCount(), AgentCreator.class.getName(), args);
+                    + agentInfo.getId(), AgentCreator.class.getName(), args);
 
             ac.start();
         } catch (StaleProxyException e) {

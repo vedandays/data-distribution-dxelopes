@@ -9,8 +9,11 @@ import jade.proto.AchieveREInitiator;
 import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.handlers.AgentMiningExecutor;
+import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
+import org.eltech.ddm.runner.TestObj;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class AgentModerator extends Agent {
 

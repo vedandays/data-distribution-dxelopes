@@ -1,6 +1,5 @@
 package org.eltech.ddm.runner;
 
-import org.eltech.ddm.agents.AgentModerator;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithm;
@@ -13,7 +12,9 @@ import org.eltech.ddm.miningcore.algorithms.MiningAlgorithm;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
+import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
+import org.omg.java.cwm.analysis.datamining.miningcore.miningmodel.MiningModel;
 
 public class RunSystem {
 
@@ -53,13 +54,14 @@ public class RunSystem {
         // Create mining algorithm settings
         miningAlgorithmSettings = new EMiningAlgorithmSettings();
         miningAlgorithmSettings.setAlgorithm("Bayes");
+        miningAlgorithmSettings.setClassname(ContinuousNaiveBayesAlgorithm.class.getName());
     }
 
     public static void testDistr() {
 
         try {
             createMiningSettings();
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.CENTRALIZATION).execute();
+            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.VERTICAL_DISTRIBUTION).execute();
 
             System.out.println(resultModel);
 
@@ -108,7 +110,7 @@ public class RunSystem {
 
         EMiningAlgorithmSettings algorithmSettings = new EMiningAlgorithmSettings();
         algorithmSettings.setName("BAYES");
-        algorithmSettings.setClassname("BAYES");
+        algorithmSettings.setClassname(ContinuousNaiveBayesAlgorithm.class.getName());
 
         miningSettings = new ClassificationFunctionSettings(logicalData);
         miningSettings.setTarget(targetAttribute);
