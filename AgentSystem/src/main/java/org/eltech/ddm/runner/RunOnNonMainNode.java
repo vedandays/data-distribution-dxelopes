@@ -7,6 +7,7 @@ public class RunOnNonMainNode {
         // "-gui"
         String[] arg = {"-gui","-port", "1098"}; //for tests
         new Boot().main(arg);
+
         //new new Boot().main(args);
     }
 }

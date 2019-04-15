@@ -10,7 +10,7 @@ import org.eltech.ddm.agents.AgentInfo;
 public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecutor> {
 
     private AgentExecutionEnvironmentSettings settings;
-    private boolean isCreated = false;
+    //private boolean isCreated = false;
 
     public AgentExecutorFactory(AgentExecutionEnvironmentSettings settings) {
         this.settings = settings;
@@ -32,7 +32,7 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
         * Создаётся агент, который отправляет только на 1 платформу запрос на создание 1 агента.
         * AgentCreator*/
 
-        Object[] args = {agentInfo, block};
+        Object[] args = {agentInfo};
 
         createRemoteAgent(args, agentInfo);
 
@@ -42,7 +42,7 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
     public AgentMiningExecutor create(MiningBlock block, MiningInputStream data, AgentInfo agentInfo) throws ParallelExecutionException {
         /* аналогично выше*/
 
-        Object[] args = {agentInfo, block, data};
+        Object[] args = {agentInfo};
 
         createRemoteAgent(args, agentInfo);
 
@@ -59,11 +59,11 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
         } catch (StaleProxyException e) {
             e.printStackTrace();
         }
-        this.isCreated = true;
+        //this.isCreated = true;
 
     }
 
-    public boolean isCreated() {
+   /* public boolean isCreated() {
         return isCreated;
-    }
+    }*/
 }

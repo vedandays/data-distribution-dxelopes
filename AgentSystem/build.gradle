@@ -13,7 +13,7 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url "http://jade.tilab.com/maven/" }
+    maven { url "https://jade.tilab.com/maven/" }
     
 }
 

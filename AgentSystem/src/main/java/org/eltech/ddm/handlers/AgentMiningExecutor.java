@@ -53,9 +53,7 @@ public class AgentMiningExecutor extends MiningExecutor {
     @Override
     public EMiningModel getModel() throws ParallelExecutionException {
 
-        /* ??????????????
-        * Ожидание пока model будет не null и потом return. */
-
+        //synchronize
         while (receivedMessage == null){
             try {
                 Thread.sleep(10);
@@ -65,6 +63,9 @@ public class AgentMiningExecutor extends MiningExecutor {
         }
 
         if(receivedMessage instanceof ExecuteResult) return ((ExecuteResult) receivedMessage).getModel();
+
+        if(receivedMessage instanceof JobFailed) System.out.println((agentInfo.getName() + " have " +
+                ((JobFailed)receivedMessage).getException()));
 
 
         return null;

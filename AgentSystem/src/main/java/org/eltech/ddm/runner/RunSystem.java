@@ -3,6 +3,7 @@ package org.eltech.ddm.runner;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithm;
+import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.handlers.AgentExecutionEnvironment;
 import org.eltech.ddm.handlers.AgentExecutionEnvironmentSettings;
@@ -12,30 +13,16 @@ import org.eltech.ddm.miningcore.algorithms.MiningAlgorithm;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
-import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
-import org.omg.java.cwm.analysis.datamining.miningcore.miningmodel.MiningModel;
 
 public class RunSystem {
 
-    private final String[] HORIZONTAL_TEST_SET_1 = {"pregnancy/2H/HDataSet1.csv", "pregnancy/2H/HDataSet2.csv"};
-    private final String[] HORIZONTAL_TEST_SET_2 = {"pregnancy/4H/HDataSet1.csv", "pregnancy/4H/HDataSet2.csv", "pregnancy/4H/HDataSet3.csv", "pregnancy/4H/HDataSet4.csv"};
-    private final String[] VER_TEST_SET_1 = {"pregnancy/2V/VDataSet1.csv", "pregnancy/2V/VDataSet2.csv"};
-    private final String[] VER_TEST_SET_2 = {"pregnancy/4V/VDataSet1.csv", "pregnancy/4V/VDataSet2.csv", "pregnancy/4V/VDataSet3.csv", "pregnancy/4V/VDataSet4.csv"};
-
+    public static String AGENTS_INFO_PATH = "/home/derkach/test/agents_info.csv";
 
     protected static EMiningAlgorithmSettings miningAlgorithmSettings;
-    protected MiningAlgorithm algorithm;
     protected static ClassificationFunctionSettings miningSettings;
 
-    private final int NUMBER_HANDLERS = 2;
-
-
     public static void main(String[] args) {
-        /*TODO: 1) логгер
-         *      2) kill/suspend каким образом
-         *      3) учесть негавтивные сценарии
-         *      4) AchieveREInitiator в агентах*/
 
         try {
             setUp();
@@ -44,10 +31,7 @@ public class RunSystem {
         }
 
         testDistr();
-
-
     }
-
 
 
     public static void setUp() throws Exception {
@@ -61,7 +45,8 @@ public class RunSystem {
 
         try {
             createMiningSettings();
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.VERTICAL_DISTRIBUTION).execute();
+            ContinuousBayesModel resultModel =
+                    (ContinuousBayesModel) createBuidTask(DataDistribution.HORIZONTAL_DISTRIBUTION, AGENTS_INFO_PATH).execute();
 
             System.out.println(resultModel);
 
@@ -70,38 +55,6 @@ public class RunSystem {
         }
     }
 
-
-    /**
-     * Cluster nodes must be launched before the test starts.
-     * Example Runner.exe 127.0.0.1 2551 8 4 127.0.0.1:2551
-     */
-    public void test4ActorsIrisSingleNodeHorizontal() {
-
-        try {
-            createMiningSettings();
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.HORIZONTAL_DISTRIBUTION,HORIZONTAL_TEST_SET_1).execute();
-
-            createMiningSettings();
-            resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.HORIZONTAL_DISTRIBUTION, HORIZONTAL_TEST_SET_2).execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Cluster nodes must be launched before the test starts.
-     * Example Runner.exe 127.0.0.1 2551 8 4 127.0.0.1:2551
-     */
-    public void test4ActorsIrisSingleNodeVertical() {
-        try {
-            createMiningSettings();
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.VERTICAL_DISTRIBUTION,VER_TEST_SET_1).execute();
-            createMiningSettings();
-            resultModel = (ContinuousBayesModel) createBuidTask(DataDistribution.VERTICAL_DISTRIBUTION, VER_TEST_SET_2).execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private static void createMiningSettings() throws MiningException {
         MiningCsvStream stream = new MiningCsvStream("100mb.csv", null, false);
@@ -118,9 +71,9 @@ public class RunSystem {
         miningSettings.verify();
     }
 
-    private static EMiningBuildTask createBuidTask(DataDistribution dist, String... files) throws MiningException {
+    private static EMiningBuildTask createBuidTask(DataDistribution dist, String agentsInfoPath) throws MiningException {
         AgentExecutionEnvironmentSettings executionSettings =
-                new AgentExecutionEnvironmentSettings(dist);
+                new AgentExecutionEnvironmentSettings(dist, agentsInfoPath);
         AgentExecutionEnvironment environment = new AgentExecutionEnvironment(executionSettings);
         MiningAlgorithm algorithm = new ContinuousNaiveBayesAlgorithm(miningSettings);
 

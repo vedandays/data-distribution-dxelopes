@@ -7,13 +7,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREInitiator;
 import org.eltech.ddm.common.ExecuteJob;
-import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.handlers.AgentMiningExecutor;
-import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
-import org.eltech.ddm.runner.TestObj;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class AgentModerator extends Agent {
 
@@ -32,6 +28,14 @@ public class AgentModerator extends Agent {
         agent = (AgentInfo) args[0];
         thisExecutor = (AgentMiningExecutor) args[1];
         executeJob = (ExecuteJob) args[2];
+
+
+        //custom synchronize
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         addBehaviour(new SendingMsg());
 

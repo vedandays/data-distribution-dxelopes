@@ -19,7 +19,6 @@ import java.util.List;
 public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningExecutor, AgentExecutorFactory> {
 
     private AgentExecutionEnvironmentSettings settings;
-    private AgentContainer mainContainer;
     private ConcurrencyExecutorFactory singleThreadFactory;
 
 
@@ -39,7 +38,6 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
 
     @Override
     protected MiningExecutor createExecutorTree(MiningSequence sequence) throws MiningException {
-        //TODO: refactoring
         List<MiningExecutor> executors = createExecutors(sequence);
         MiningExecutor handler = executors.get(0);
         fullExecutor(handler.getBlock(), handler);
@@ -78,7 +76,7 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
         for (AgentInfo agent : settings.getAgentInfoArrayList()) {
             if (block instanceof MiningLoopVectors) {
                 AgentMiningExecutor executor = getMiningExecutorFactory().create(block,
-                        MiningCsvStream.createWithoutInit(agent.getFilePath(), false), agent);
+                        MiningCsvStream.createWithoutInit(agent.getFilePath(), true), agent);
                 execs.add(executor);
             } else if (block instanceof MiningSequence) {
                 execs.add(getNonAgentExecutor(block));
