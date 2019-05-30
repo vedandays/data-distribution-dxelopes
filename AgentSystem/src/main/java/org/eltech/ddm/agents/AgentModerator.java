@@ -30,8 +30,7 @@ public class AgentModerator extends Agent {
         executeJob = (ExecuteJob) args[2];
 
         //custom synchronize
-        while (!thisExecutor.isCreated());
-
+        while (!thisExecutor.isExist());
         if(thisExecutor.getStateExist().isCreated()) addBehaviour(new SendingMsg());
         else {
             thisExecutor.setReceivedMessage(new JobFailed(
@@ -91,6 +90,7 @@ public class AgentModerator extends Agent {
             } catch (UnreadableException e){ e.printStackTrace();}
 
             thisExecutor.setReceivedMessage(receivedMessage);
+            doDelete();
         }
     }
 }

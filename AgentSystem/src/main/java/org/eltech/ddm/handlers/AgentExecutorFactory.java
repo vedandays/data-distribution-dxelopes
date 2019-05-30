@@ -10,7 +10,7 @@ import org.eltech.ddm.agents.AgentInfo;
 public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecutor> {
 
     private AgentExecutionEnvironmentSettings settings;
-    //private boolean isCreated = false;
+    //private boolean isExist = false;
 
     public AgentExecutorFactory(AgentExecutionEnvironmentSettings settings) {
         this.settings = settings;

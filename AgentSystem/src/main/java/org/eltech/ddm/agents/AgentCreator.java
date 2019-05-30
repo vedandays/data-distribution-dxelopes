@@ -30,13 +30,10 @@ public class AgentCreator extends Agent {
         newAgent = (AgentInfo) args[0];
         executor = (AgentMiningExecutor) args[1];
 
-        //SendMessages a = new SendMessages();
-        Check a = new Check();
-        addBehaviour(a);
+        addBehaviour(new Create());
     }
 
-
-    class Check extends OneShotBehaviour {
+    class Create extends OneShotBehaviour {
         public void action(){
 
             SLCodec codec = new SLCodec();
@@ -49,9 +46,6 @@ public class AgentCreator extends Agent {
             CreateAgent ca = new CreateAgent();
             ca.setAgentName(newAgent.getName());
             ca.setClassName(newAgent.getClassName()); //full path to agentclass
-            //ca.setClassName("jade.tools.DummyAgent.DummyAgent");
-            //ca.addArguments(args);
-            //ca.setContainer((ContainerID) here()); //Main-Container@192.168.31.192 - example
 
             ContainerID id = new ContainerID();
             id.setName("Main-Container"); //always Main-Container
@@ -66,29 +60,25 @@ public class AgentCreator extends Agent {
             request.setOntology(JADEManagementOntology.getInstance().getName());
             request.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);
 
-
             try
             {
                 cm.fillContent(request, new Action(getAMS(), ca));
-                //send(request);
                 addBehaviour(new AchieveREInitiator(this.myAgent, request) {
                     protected void handleInform(ACLMessage inform) {
                         System.out.println("Agent " + newAgent.getName() +" successfully created");
                         executor.setStateExist(new StateExist(true));
+                        doDelete();
                     }
 
                     protected void handleFailure(ACLMessage failure) {
                         System.out.println("Error creating agent " + newAgent.getName());
                         executor.setStateExist(new StateExist(false));
+                        doDelete();
                     }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
-
     }
-
 }

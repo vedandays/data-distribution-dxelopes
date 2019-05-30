@@ -14,14 +14,16 @@ import org.eltech.ddm.miningcore.algorithms.MiningExecutor;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.eltech.ddm.agents.AgentInfo;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class AgentMiningExecutor extends MiningExecutor {
 
-    private Object receivedMessage = null;
+    private AtomicReference<Object> receivedMessage = new AtomicReference<>(null);
     private AgentExecutionEnvironmentSettings settings;
     private AgentInfo agentInfo;
     private DataDistribution dist;
     private ExecuteJob executeJob;
-    private StateExist stateExist = null;
+    private AtomicReference<StateExist> stateExist = new AtomicReference<>(null);
 
 
     protected AgentMiningExecutor(MiningBlock block,
@@ -50,17 +52,17 @@ public class AgentMiningExecutor extends MiningExecutor {
     public EMiningModel getModel(){
         while (!checkReceivedMessage());
 
-        if(receivedMessage instanceof ExecuteResult) return ((ExecuteResult) receivedMessage).getModel();
+        if(receivedMessage.get() instanceof ExecuteResult) return ((ExecuteResult) receivedMessage.get()).getModel();
 
-        if(receivedMessage instanceof JobFailed) System.out.println((agentInfo.getName() + " have " +
-                ((JobFailed)receivedMessage).getException()));
+        if(receivedMessage.get() instanceof JobFailed) System.out.println((agentInfo.getName() + " have " +
+                ((JobFailed)receivedMessage.get()).getException()));
 
         return null;
     }
 
 
     public void setReceivedMessage(Object receivedMessage) {
-        this.receivedMessage = receivedMessage;
+        this.receivedMessage.set(receivedMessage);
     }
 
     private void startAgentModerator(Object[] args){
@@ -74,21 +76,21 @@ public class AgentMiningExecutor extends MiningExecutor {
         }
     }
 
-    public boolean isCreated() {
-        if (stateExist != null) return true;
+    public boolean isExist() {
+        if (getStateExist() != null) return true;
         return false;
     }
 
     private boolean checkReceivedMessage(){
-        if(receivedMessage != null) return true;
+        if(receivedMessage.get() != null) return true;
         return false;
     }
 
     public StateExist getStateExist() {
-        return stateExist;
+        return stateExist.get();
     }
 
     public void setStateExist(StateExist stateExist) {
-        this.stateExist = stateExist;
+        this.stateExist.set(stateExist);
     }
 }

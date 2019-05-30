@@ -36,8 +36,6 @@ public class AgentMiner extends Agent {
     //private ACLMessage req;
 
     public void setup(){
-
-
         System.out.println("Agent " + this.getAID().getLocalName() + " is started.\n");
 
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
@@ -55,7 +53,6 @@ public class AgentMiner extends Agent {
                     e.printStackTrace();
                 }
 
-
                 addBehaviour(new Execute());
 
                 ACLMessage agree = request.createReply();
@@ -68,8 +65,6 @@ public class AgentMiner extends Agent {
                 return null;
             }
         });
-
-
     }
 
     class Execute extends OneShotBehaviour{
@@ -130,9 +125,6 @@ public class AgentMiner extends Agent {
                 } catch (MiningException e) {
                     e.printStackTrace();
                 }
-//            Optional<MiningBlock> block2 = getChildrenMiningBlock(block, new HashSet<>()).stream()
-//                    .filter(block1 -> block1 instanceof MiningLoopElement)
-//                    .findFirst();
             }
             return block;
         }
@@ -178,7 +170,6 @@ public class AgentMiner extends Agent {
         private void catchException(Exception e){
             System.out.println("fail");
             e.printStackTrace();
-            //addBehaviour(new SendFailResult());
             jobFailed = new JobFailed(e);
             sendResult(jobFailed, ACLMessage.REFUSE);
         }
@@ -213,7 +204,5 @@ public class AgentMiner extends Agent {
 
             System.out.println(myAgent.getAID().getLocalName() + " sent a message.");
         }
-
-
     }
 }
