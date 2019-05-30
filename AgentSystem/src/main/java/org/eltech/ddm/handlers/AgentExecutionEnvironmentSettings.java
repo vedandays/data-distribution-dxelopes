@@ -4,6 +4,7 @@ import jade.wrapper.AgentContainer;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.sup.ConfigReader;
 import org.eltech.ddm.agents.AgentInfo;
+import org.eltech.ddm.sup.Parser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +26,11 @@ public class AgentExecutionEnvironmentSettings implements Serializable, Cloneabl
     public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution,String AGENTS_INFO_PATH) {
         this.dataDistribution = dataDistribution;
         agentInfoArrayList = ConfigReader.readFile(AGENTS_INFO_PATH);
-        System.out.println(AGENTS_INFO_PATH);
+    }
+
+    public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution, String[] arrayOfAgents){
+        this.dataDistribution = dataDistribution;
+        agentInfoArrayList = Parser.parseArray(arrayOfAgents);
     }
 
     public DataDistribution getDataDistribution() {

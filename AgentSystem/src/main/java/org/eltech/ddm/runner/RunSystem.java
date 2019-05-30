@@ -3,7 +3,6 @@ package org.eltech.ddm.runner;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithm;
-import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.handlers.AgentExecutionEnvironment;
 import org.eltech.ddm.handlers.AgentExecutionEnvironmentSettings;
@@ -18,6 +17,9 @@ import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
 public class RunSystem {
 
     public static String AGENTS_INFO_PATH = "/home/derkach/test/agents_info.csv";
+    public static String TARGET_ATTRIBUTE = "outcome_pregnancy";
+    public static String LOGICAL_DATA = "/home/derkach/test/100mb.csv";
+
 
     protected static EMiningAlgorithmSettings miningAlgorithmSettings;
     protected static ClassificationFunctionSettings miningSettings;
@@ -46,7 +48,8 @@ public class RunSystem {
         try {
             createMiningSettings();
             ContinuousBayesModel resultModel =
-                    (ContinuousBayesModel) createBuidTask(DataDistribution.HORIZONTAL_DISTRIBUTION, AGENTS_INFO_PATH).execute();
+                    (ContinuousBayesModel) createBuidTask(DataDistribution.HORIZONTAL_DISTRIBUTION, AGENTS_INFO_PATH)
+                            .execute();
 
             System.out.println(resultModel);
 
@@ -57,9 +60,9 @@ public class RunSystem {
 
 
     private static void createMiningSettings() throws MiningException {
-        MiningCsvStream stream = new MiningCsvStream("100mb.csv", null, false);
+        MiningCsvStream stream = new MiningCsvStream(LOGICAL_DATA, null, true);
         ELogicalData logicalData = stream.getLogicalData();
-        ELogicalAttribute targetAttribute = logicalData.getAttribute("outcome_pregnancy");
+        ELogicalAttribute targetAttribute = logicalData.getAttribute(TARGET_ATTRIBUTE);
 
         EMiningAlgorithmSettings algorithmSettings = new EMiningAlgorithmSettings();
         algorithmSettings.setName("BAYES");

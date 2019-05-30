@@ -23,19 +23,7 @@ public class ConfigReader {
         try( BufferedReader bk = new BufferedReader(new FileReader(filePath)) )  {
 
             while ((line = bk.readLine()) != null) {
-                lines = line.split(splitBySymbol);
-
-                AgentInfo agentInfo = new AgentInfo();
-
-                agentInfo.setName(lines[0]);
-                agentInfo.setIp(lines[1]);
-                agentInfo.setHost(lines[2]);
-                agentInfo.setTcpPort(lines[3]);
-                agentInfo.setHttpPort(lines[4]);
-                agentInfo.setClassName(lines[5]);
-                agentInfo.setFilePath(lines[6]);
-
-                agentInfoArrayList.add(agentInfo);
+                agentInfoArrayList.add(Parser.setInAgentInfo(splitBySymbol, line));
             }
 
         } catch (FileNotFoundException e) {
