@@ -7,6 +7,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.AchieveREInitiator;
 import org.eltech.ddm.common.ExecuteJob;
+import org.eltech.ddm.common.JobFailed;
 import org.eltech.ddm.handlers.AgentMiningExecutor;
 
 import java.io.IOException;
@@ -20,7 +21,6 @@ public class AgentModerator extends Agent {
     private AgentMiningExecutor thisExecutor;
 
     public void setup() {
-
         System.out.println("\nAgent " + this.getAID().getLocalName() + " is started.\n");
 
         args = getArguments();
@@ -29,16 +29,15 @@ public class AgentModerator extends Agent {
         thisExecutor = (AgentMiningExecutor) args[1];
         executeJob = (ExecuteJob) args[2];
 
-
         //custom synchronize
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (!thisExecutor.isCreated());
+
+        if(thisExecutor.getStateExist().isCreated()) addBehaviour(new SendingMsg());
+        else {
+            thisExecutor.setReceivedMessage(new JobFailed(
+                    new Exception(agent.getName() +" is not created. Moderator deleted")));
+            doDelete();
         }
-
-        addBehaviour(new SendingMsg());
-
     }
 
     class SendingMsg extends OneShotBehaviour{
@@ -66,7 +65,7 @@ public class AgentModerator extends Agent {
                     }
 
                     protected void handleInform(ACLMessage inform) {
-                        System.out.println("\nReceived a INFORM message from " + inform.getSender().getLocalName() + "\n");
+                        System.out.println("\nReceived a INFORM message from "+inform.getSender().getLocalName()+"\n");
                         setIntoExecutor(inform);
                     }
 
@@ -94,5 +93,4 @@ public class AgentModerator extends Agent {
             thisExecutor.setReceivedMessage(receivedMessage);
         }
     }
-
 }

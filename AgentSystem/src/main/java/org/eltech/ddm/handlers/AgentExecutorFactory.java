@@ -17,36 +17,35 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
     }
 
     @Override
-    public AgentMiningExecutor create(MiningBlock block) throws ParallelExecutionException {
+    public AgentMiningExecutor create(MiningBlock block) {
         return null;
     }
 
     @Override
-    public AgentMiningExecutor create(MiningBlock block, MiningInputStream data) throws ParallelExecutionException {
+    public AgentMiningExecutor create(MiningBlock block, MiningInputStream data) {
         return null;
     }
 
-    public AgentMiningExecutor create(MiningBlock block, AgentInfo agentInfo) throws ParallelExecutionException {
+    public AgentMiningExecutor create(MiningBlock block, AgentInfo agentInfo) {
+        AgentMiningExecutor executor =
+                new AgentMiningExecutor(block, settings, agentInfo, settings.getDataDistribution(), null);
 
-        /*
-        * Создаётся агент, который отправляет только на 1 платформу запрос на создание 1 агента.
-        * AgentCreator*/
-
-        Object[] args = {agentInfo};
+        Object[] args = {agentInfo, executor};
 
         createRemoteAgent(args, agentInfo);
 
-        return new AgentMiningExecutor(block, settings, agentInfo, settings.getDataDistribution(), null);
+        return executor;
     }
 
-    public AgentMiningExecutor create(MiningBlock block, MiningInputStream data, AgentInfo agentInfo) throws ParallelExecutionException {
-        /* аналогично выше*/
+    public AgentMiningExecutor create(MiningBlock block, MiningInputStream data, AgentInfo agentInfo) {
+        AgentMiningExecutor executor =
+                new AgentMiningExecutor(block, settings, agentInfo, settings.getDataDistribution(), data);
 
-        Object[] args = {agentInfo};
+        Object[] args = {agentInfo, executor};
 
         createRemoteAgent(args, agentInfo);
 
-        return new AgentMiningExecutor(block, settings, agentInfo, settings.getDataDistribution(), data);
+        return executor;
     }
 
     private void createRemoteAgent(Object[] args, AgentInfo agentInfo){
@@ -59,11 +58,6 @@ public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecu
         } catch (StaleProxyException e) {
             e.printStackTrace();
         }
-        //this.isCreated = true;
 
     }
-
-   /* public boolean isCreated() {
-        return isCreated;
-    }*/
 }

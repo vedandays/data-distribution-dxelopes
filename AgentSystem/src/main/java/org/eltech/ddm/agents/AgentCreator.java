@@ -13,18 +13,22 @@ import jade.domain.JADEAgentManagement.CreateAgent;
 import jade.domain.JADEAgentManagement.JADEManagementOntology;
 import jade.lang.acl.ACLMessage;
 import jade.proto.AchieveREInitiator;
+import org.eltech.ddm.common.StateExist;
+import org.eltech.ddm.handlers.AgentMiningExecutor;
 
 
 public class AgentCreator extends Agent {
 
     private AgentInfo newAgent;
     private Object[] args;
+    private AgentMiningExecutor executor;
 
     public void setup() {
         System.out.println("\nAgent " + this.getAID().getLocalName() + " is started.");
 
         args = getArguments();
         newAgent = (AgentInfo) args[0];
+        executor = (AgentMiningExecutor) args[1];
 
         //SendMessages a = new SendMessages();
         Check a = new Check();
@@ -57,8 +61,6 @@ public class AgentCreator extends Agent {
             ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
             AID r = new AID("ams@" + newAgent.getIp() + ":" + newAgent.getTcpPort() + "/JADE");
             r.addAddresses("http://" + newAgent.getHost() + ":" + newAgent.getHttpPort() +  "/acc");
-            //r.addAddresses("http://entera:7778/acc");
-
 
             request.addReceiver(r);
             request.setOntology(JADEManagementOntology.getInstance().getName());
@@ -72,10 +74,12 @@ public class AgentCreator extends Agent {
                 addBehaviour(new AchieveREInitiator(this.myAgent, request) {
                     protected void handleInform(ACLMessage inform) {
                         System.out.println("Agent " + newAgent.getName() +" successfully created");
+                        executor.setStateExist(new StateExist(true));
                     }
 
                     protected void handleFailure(ACLMessage failure) {
                         System.out.println("Error creating agent " + newAgent.getName());
+                        executor.setStateExist(new StateExist(false));
                     }
                 });
             } catch (Exception e) {
