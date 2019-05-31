@@ -17,8 +17,8 @@ import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
 public class RunSystem {
 
     public static String AGENTS_INFO_PATH = "/home/derkach/test/agents_info.csv";
-    public static String TARGET_ATTRIBUTE = "outcome_pregnancy";
-    public static String LOGICAL_DATA = "/home/derkach/test/100mb.csv";
+    public static String TARGET_ATTRIBUTE = "outcome_pregnancy"; //"outcome_pregnancy"
+    public static String LOGICAL_DATA = "/home/derkach/test/100mb.csv"; //"/home/derkach/test/100mb.csv"
 
 
     protected static EMiningAlgorithmSettings miningAlgorithmSettings;

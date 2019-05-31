@@ -68,7 +68,7 @@ public class AgentMiningExecutor extends MiningExecutor {
     private void startAgentModerator(Object[] args){
         try {
             AgentController ac = settings.getMainContainer().createNewAgent(agentInfo.getName() +
-                    "-Moderator-" + agentInfo.getCount(), AgentModerator.class.getName(), args);
+                    "-Moderator-" + agentInfo.getId(), AgentModerator.class.getName(), args);
 
             ac.start();
         } catch (StaleProxyException e) {
