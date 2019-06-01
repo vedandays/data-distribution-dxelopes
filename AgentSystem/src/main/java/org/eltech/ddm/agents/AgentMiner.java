@@ -14,7 +14,6 @@ import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.common.JobFailed;
 import org.eltech.ddm.inputdata.MiningInputStream;
-import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
@@ -42,7 +41,7 @@ public class AgentMiner extends Agent {
         addBehaviour(new AchieveREResponder(this,mt){
 
             @Override
-            protected ACLMessage handleRequest(ACLMessage request) throws NotUnderstoodException, RefuseException {
+            protected ACLMessage handleRequest(ACLMessage request) {
                 System.out.println("Agent " + getLocalName() + " received from " + request.getSender().getName() );
 
                 answ = request.createReply();
@@ -61,7 +60,7 @@ public class AgentMiner extends Agent {
             }
 
             @Override
-            protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
+            protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) {
                 return null;
             }
         });
@@ -76,7 +75,7 @@ public class AgentMiner extends Agent {
             System.out.println("Executing....");
 
             try {
-                changeMiningSettings((MiningCsvStream) executeJob.getInputStream(), executeJob.getBlock().getFunctionSettings());
+                changeMiningSettings(executeJob.getInputStream(), executeJob.getBlock().getFunctionSettings());
             } catch (MiningException e) { catchException(e); return; }
 
             EMiningModel model = null;
@@ -156,7 +155,7 @@ public class AgentMiner extends Agent {
         }
 
 
-        private void changeMiningSettings(MiningCsvStream stream, MiningFunctionSettings settings) throws MiningException {
+        private void changeMiningSettings(MiningInputStream stream, MiningFunctionSettings settings) throws MiningException {
             stream.recognize();
             ELogicalData logicalData = stream.getLogicalData();
             if (settings instanceof ClassificationFunctionSettings) {
