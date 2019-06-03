@@ -17,8 +17,13 @@ import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
 public class RunSystem {
 
     public static String AGENTS_INFO_PATH = "/home/derkach/test/agents_info.csv";
-    public static String TARGET_ATTRIBUTE = "outcome_pregnancy"; //"outcome_pregnancy"
-    public static String LOGICAL_DATA = "/home/derkach/test/100mb.csv"; //"/home/derkach/test/100mb.csv"
+    public static String TARGET_ATTRIBUTE = "outcome_pregnancy";
+    public static String LOGICAL_DATA = "/home/derkach/test/100mb.csv";
+    public static String[] AGENTS_ARRAY =
+            {"Miner1,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v1.csv",
+            "Miner2,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v2.csv",
+            "Miner3,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v3.csv",
+            "Miner4,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v4.csv"};
 
 
     protected static EMiningAlgorithmSettings miningAlgorithmSettings;
@@ -48,7 +53,7 @@ public class RunSystem {
         try {
             createMiningSettings();
             ContinuousBayesModel resultModel =
-                    (ContinuousBayesModel) createBuidTask(DataDistribution.HORIZONTAL_DISTRIBUTION, AGENTS_INFO_PATH)
+                    (ContinuousBayesModel) createBuidTask(DataDistribution.VERTICAL_DISTRIBUTION, null, AGENTS_ARRAY)
                             .execute();
 
             System.out.println(resultModel);
@@ -74,9 +79,9 @@ public class RunSystem {
         miningSettings.verify();
     }
 
-    private static EMiningBuildTask createBuidTask(DataDistribution dist, String agentsInfoPath) throws MiningException {
+    private static EMiningBuildTask createBuidTask(DataDistribution dist, String agentsInfoPath, String[] agentsArray) throws MiningException {
         AgentExecutionEnvironmentSettings executionSettings =
-                new AgentExecutionEnvironmentSettings(dist, agentsInfoPath);
+                new AgentExecutionEnvironmentSettings(dist, agentsArray);
         AgentExecutionEnvironment environment = new AgentExecutionEnvironment(executionSettings);
         MiningAlgorithm algorithm = new ContinuousNaiveBayesAlgorithm(miningSettings);
 

@@ -8,7 +8,12 @@ import org.eltech.ddm.sup.Parser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * Agent Execution environment settings contains list of information about agents,
+ * type of data distribution and reference on main container JADE on this node
+ *
+ * @author Derkach Petr
+ */
 public class AgentExecutionEnvironmentSettings implements Serializable, Cloneable {
 
     private final DataDistribution dataDistribution;

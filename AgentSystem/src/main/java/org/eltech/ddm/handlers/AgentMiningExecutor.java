@@ -15,14 +15,18 @@ import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.eltech.ddm.agents.AgentInfo;
 
 import java.util.concurrent.atomic.AtomicReference;
-
+/**
+ * MiningExecutor for agent environment implementation.
+ *
+ * @author Derkach Petr
+ */
 public class AgentMiningExecutor extends MiningExecutor {
 
-    private AtomicReference<Object> receivedMessage = new AtomicReference<>(null);
     private AgentExecutionEnvironmentSettings settings;
     private AgentInfo agentInfo;
     private DataDistribution dist;
     private ExecuteJob executeJob;
+    private AtomicReference<Object> receivedMessage = new AtomicReference<>(null);
     private AtomicReference<StateExist> stateExist = new AtomicReference<>(null);
 
 

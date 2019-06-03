@@ -15,7 +15,11 @@ import org.eltech.ddm.miningcore.algorithms.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Agent execution environment provides environment for performing algorithms
+ * in multi-agent system way.
+ * @author Derkach Petr
+ */
 public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningExecutor, AgentExecutorFactory> {
 
     private AgentExecutionEnvironmentSettings settings;
@@ -30,7 +34,6 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
     @Override
     protected void initEnvironment() throws ParallelExecutionException {
         initJadePlatform();
-        /* создание фабрики*/
         miningExecutorFactory = new AgentExecutorFactory(settings);
         singleThreadFactory = new ConcurrencyExecutorFactory(1);
 
@@ -92,18 +95,18 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
         return execs;
     }
 
+    //initialization Jade Platform and setting main container to settings
     private void initJadePlatform() {
         Runtime rt = Runtime.instance();
         rt.setCloseVM(true);
         Profile mp = new ProfileImpl();
-        //mp.setParameter("profile.LOCAL_PORT", "1099"); //проверить без порта
         mp.setParameter(ProfileImpl.MAIN_HOST, "localhost");
-        //mp.setParameter("profile.DETECT_MAIN","False");
-        //mp.setParameter("profile.CONTAINER_NAME","MAIN_CONT");
+
         this.settings.setMainContainer(rt.createMainContainer(mp));
 
     }
 
+    //main default executor for merge results
     private ConcurrencyMiningExecutor getNonAgentExecutor(MiningBlock block) {
         try {
             return singleThreadFactory.create(block);

@@ -2,9 +2,6 @@ package org.eltech.ddm.agents;
 
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.domain.FIPAAgentManagement.FailureException;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -24,7 +21,11 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningfunctionsettings.Mi
 
 import java.io.IOException;
 import java.util.Set;
-
+/**
+ * Agent that processes data
+ *
+ * @author Derkach Petr
+ */
 public class AgentMiner extends Agent {
 
     private ExecuteResult executeResult;
@@ -32,17 +33,17 @@ public class AgentMiner extends Agent {
     private JobFailed jobFailed;
 
     private ACLMessage answ;
-    //private ACLMessage req;
+
 
     public void setup(){
-        System.out.println("Agent " + this.getAID().getLocalName() + " is started.\n");
+        System.out.println(this.getAID().getName() + " is started.\n");
 
-        MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+        MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST); //only REQUEST message receives
         addBehaviour(new AchieveREResponder(this,mt){
 
             @Override
             protected ACLMessage handleRequest(ACLMessage request) {
-                System.out.println("Agent " + getLocalName() + " received from " + request.getSender().getName() );
+                System.out.println(myAgent.getName() + " received from " + request.getSender().getName() );
 
                 answ = request.createReply();
 
@@ -67,8 +68,6 @@ public class AgentMiner extends Agent {
     }
 
     class Execute extends OneShotBehaviour{
-
-        private boolean finish = false;
 
         public void action(){
 
@@ -98,13 +97,10 @@ public class AgentMiner extends Agent {
                 model = block.run(model);
             } catch (MiningException e) { catchException(e); return; }
 
+            System.out.println("Execution complete.");
+
             executeResult = new ExecuteResult(model);
-            //System.out.println(model);
             sendResult(executeResult, ACLMessage.INFORM);
-
-            //addBehaviour(new SendResult());
-
-
         }
 
         /**
@@ -194,7 +190,7 @@ public class AgentMiner extends Agent {
 
             try {
                 answ.setContentObject(er);
-                System.out.println("MINER: "+er.getModel());
+                //System.out.println("MINER: "+er.getModel());
             } catch (IOException e) {
                 e.printStackTrace();
             }

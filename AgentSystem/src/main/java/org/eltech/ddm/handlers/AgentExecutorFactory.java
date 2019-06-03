@@ -6,11 +6,17 @@ import org.eltech.ddm.agents.AgentCreator;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.algorithms.MiningBlock;
 import org.eltech.ddm.agents.AgentInfo;
-
+/**
+ * Factory Object for generating MiningExecutor for agent environment
+ *
+ * @see AgentExecutionEnvironment
+ * @see org.eltech.ddm.miningcore.algorithms.MiningExecutor
+ *
+ * @author Derkach Petr
+ */
 public class AgentExecutorFactory extends MiningExecutorFactory<AgentMiningExecutor> {
 
     private AgentExecutionEnvironmentSettings settings;
-    //private boolean isExist = false;
 
     public AgentExecutorFactory(AgentExecutionEnvironmentSettings settings) {
         this.settings = settings;

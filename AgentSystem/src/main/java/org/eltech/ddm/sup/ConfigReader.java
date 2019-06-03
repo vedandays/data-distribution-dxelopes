@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-/* AgentInfo info:
-   <name>,<host>,<TcpPort>,<HttpPort>,<className>,<filePath> */
+/*reading file with agents information */
 
 public class ConfigReader {
     public static  ArrayList<AgentInfo> readFile(String filePath){

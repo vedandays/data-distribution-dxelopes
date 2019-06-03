@@ -1,20 +1,20 @@
 package org.eltech.ddm.agents;
 
-
-/* Agents info */
-
 import java.io.Serializable;
 
+/**
+ * Information about agent
+ *
+ * @author Derkach Petr
+ */
 public class AgentInfo implements Serializable {
-
-
     /* using for unique name of agent on platform */
     private static long count = 0;
     private long id;
-
+    /* ----------------------------------------- */
     private String name;        //name of agent
     private String ip;          //IP address of node
-    private String host;        //Host is localhost
+    private String host;        //Host is localhost (computer name in local net)-> http://<localhost>:<httPort>
     private String tcpPort;     //TCP port -> <AgentName>@<ip>:<tcpPort>/JADE
     private String httpPort;    //MTP/HTTP port -> http://<localhost>:<httPort>
     private String className;   //full path to classname -> <packages>.<className>

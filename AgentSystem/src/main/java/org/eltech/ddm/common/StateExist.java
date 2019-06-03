@@ -1,5 +1,9 @@
 package org.eltech.ddm.common;
-
+/**
+ * Custom class for synchronization communication of agents
+ *
+ * @author Derkach Petr
+ */
 public class StateExist {
     private boolean isCreated = false;
 
