@@ -216,10 +216,10 @@ public class CentralAgent extends Agent {
                     System.out.println();
                     return headersMessage;
                 }
-            } else {
+            } /*else {
                 block();
                 return null;
-            }
+            }*/
             return null;
         }
 

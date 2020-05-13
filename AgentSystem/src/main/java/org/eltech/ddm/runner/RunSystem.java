@@ -25,14 +25,14 @@ public class RunSystem {
 
     public static String AGENTS_INFO_PATH = "E:\\data\\agents_info.csv";
     public static String TARGET_ATTRIBUTE = "Species";
-    public static String LOGICAL_DATA = "D:\\data\\new_Iris_test.csv";
+    public static String LOGICAL_DATA = "E:\\data\\data\\iris\\new_Iris_test.csv";
     //    public static String[] AGENTS_ARRAY = {"Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv"};
     public static List<ASettings> AGENTS_ARRAY = new ArrayList<>();
     public static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 
     static {
         // file settings
-        ASettings fileSettings = new FileSettings("Miner1,192.168.0.104,DESKTOP-CE8ADF,1098,7778,org.eltech.ddm.agents.AgentMiner,E:\\data\\data\\iris\\data_Iris.csv");
+        ASettings fileSettings = new FileSettings("Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");
         AGENTS_ARRAY.add(fileSettings);
 
         // sql settings

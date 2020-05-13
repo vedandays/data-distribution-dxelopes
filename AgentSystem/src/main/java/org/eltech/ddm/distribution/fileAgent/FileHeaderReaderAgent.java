@@ -65,7 +65,7 @@ public class FileHeaderReaderAgent extends Agent {
             }
         }
 
-        private void reply(HeadersMessage content, ACLMessage msg ) { // todo ved вынести в общий класс
+        private void reply(HeadersMessage content, ACLMessage msg) { // todo ved вынести в общий класс
             ACLMessage reply = new ACLMessage(ACLMessage.REQUEST);
 
             AID receiverId = new AID(msg.getSender().getName(), AID.ISGUID);
@@ -75,6 +75,7 @@ public class FileHeaderReaderAgent extends Agent {
             reply.setReplyWith(msg.getReplyWith());
             setContent(reply, content);
 //            System.out.println("reply to " + msg.getSender().getName() + " " + );
+
             send(reply);
         }
 
