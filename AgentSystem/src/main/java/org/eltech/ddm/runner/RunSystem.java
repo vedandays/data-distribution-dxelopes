@@ -5,6 +5,7 @@ import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithm;
 import org.eltech.ddm.distribution.res.ResParser;
 import org.eltech.ddm.distribution.settings.ASettings;
+import org.eltech.ddm.distribution.settings.ConnectionSettings;
 import org.eltech.ddm.distribution.settings.FileSettings;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.handlers.AgentExecutionEnvironment;
@@ -18,6 +19,7 @@ import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings
 import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -36,6 +38,13 @@ public class RunSystem {
         AGENTS_ARRAY.add(fileSettings);
 
         // sql settings
+        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");
+        postgresqlSettings.setUrl("jdbc:postgresql://localhost:5432/kddcup");
+        postgresqlSettings.setUser("postgres");
+        postgresqlSettings.setPassword("qwerty");
+        postgresqlSettings.setSchemaName("public");
+        postgresqlSettings.setColumnNames(Arrays.asList("iris"));
+        AGENTS_ARRAY.add(postgresqlSettings);
     }
 
 
