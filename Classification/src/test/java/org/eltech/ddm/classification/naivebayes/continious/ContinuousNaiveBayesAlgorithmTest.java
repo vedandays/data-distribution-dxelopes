@@ -28,9 +28,9 @@ public class ContinuousNaiveBayesAlgorithmTest {
     private static final String ALGO_PATH = "org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithmTest";
 
     private static final String[] TEST_FILES =
-            {"100mb.csv", "500mb.csv", "1000mb.csv", "1500mb.csv", "2000mb.csv", "2500mb.csv", "3000mb.csv"};
+            {"E:\\data\\data\\test_1.csv", "E:\\data\\data\\test_2.csv"};
 
-    private static final int HANDLERS_NUMBER = 8;
+    private static final int HANDLERS_NUMBER = 3;
 
     protected MiningCsvStream inputData;
     private ClassificationFunctionSettings miningSettings;
@@ -39,7 +39,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
     @Before
     public void setUp() throws Exception {
         CsvParserSettings settings = getCsvParserSettings();
-        this.inputData = new MiningCsvStream("pregnancy/short.csv", settings, false);
+        this.inputData = new MiningCsvStream("E:\\data\\data\\test.csv", settings, true);
     }
 
     private CsvParserSettings getCsvParserSettings() {
@@ -61,7 +61,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
     public void test() throws MiningException {
         createMiningSettings();
         for (String fileName : TEST_FILES) {
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask("pregnancy/" + fileName).execute();
+            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(fileName).execute();
             verifyModel(resultModel);
         }
 
@@ -95,7 +95,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
 
     private void createMiningSettings() throws MiningException {
         ELogicalData logicalData = inputData.getLogicalData();
-        ELogicalAttribute targetAttribute = logicalData.getAttribute("outcome_pregnancy");
+        ELogicalAttribute targetAttribute = logicalData.getAttribute("res");
 
         EMiningAlgorithmSettings algorithmSettings = new EMiningAlgorithmSettings();
         algorithmSettings.setName(ALGO_NAME);

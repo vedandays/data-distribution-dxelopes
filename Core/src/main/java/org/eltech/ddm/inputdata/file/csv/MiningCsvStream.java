@@ -12,6 +12,7 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
 
 import javax.datamining.data.AttributeDataType;
 import java.io.*;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -199,15 +200,18 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         attributeAssignmentSet = new EAttributeAssignmentSet();
 
         settings.setNumberOfRecordsToRead(1);
-        for (String attrName : parser.getContext().parsedHeaders()) {
-            ELogicalAttribute la = new ELogicalAttribute(attrName, AttributeType.numerical);
-            PhysicalAttribute pa = new PhysicalAttribute(attrName, AttributeType.numerical, AttributeDataType.doubleType);
-            EDirectAttributeAssignment da = new EDirectAttributeAssignment();
-            logicalData.addAttribute(la);
-            physicalData.addAttribute(pa);
-            da.addLogicalAttribute(la);
-            da.setAttribute(pa);
-            attributeAssignmentSet.addAssignment(da);
+        String[] headers = parser.getContext().parsedHeaders();
+        for (String attrName : headers) {
+            if (Objects.nonNull(attrName)) {
+                ELogicalAttribute la = new ELogicalAttribute(attrName, AttributeType.numerical);
+                PhysicalAttribute pa = new PhysicalAttribute(attrName, AttributeType.numerical, AttributeDataType.doubleType);
+                EDirectAttributeAssignment da = new EDirectAttributeAssignment();
+                logicalData.addAttribute(la);
+                physicalData.addAttribute(pa);
+                da.addLogicalAttribute(la);
+                da.setAttribute(pa);
+                attributeAssignmentSet.addAssignment(da);
+            }
         }
         settings.setNumberOfRecordsToRead(-1);
     }

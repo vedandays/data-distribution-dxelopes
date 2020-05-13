@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class AgentExecutionEnvironmentSettings implements Serializable, Cloneable {
 
-    private final DataDistribution dataDistribution;
+    private DataDistribution dataDistribution;
     private ArrayList<AgentInfo> agentInfoArrayList;
     private AgentContainer mainContainer = null;
 
@@ -46,6 +46,7 @@ public class AgentExecutionEnvironmentSettings implements Serializable, Cloneabl
         return agentInfoArrayList;
     }
 
-
-
+    public void setDataDistribution(DataDistribution dataDistribution) {
+        this.dataDistribution = dataDistribution;
+    }
 }

@@ -4,7 +4,10 @@ import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
 import org.eltech.ddm.agents.AgentInfo;
+import org.eltech.ddm.distribution.central.CentralAgent;
 import org.eltech.ddm.environment.ExecutionEnvironment;
 import org.eltech.ddm.handlers.thread.ConcurrencyExecutorFactory;
 import org.eltech.ddm.handlers.thread.ConcurrencyMiningExecutor;
@@ -97,13 +100,38 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
 
     //initialization Jade Platform and setting main container to settings
     private void initJadePlatform() {
-        Runtime rt = Runtime.instance();
+/*        Runtime rt = Runtime.instance();
         rt.setCloseVM(true);
         Profile mp = new ProfileImpl();
         mp.setParameter(ProfileImpl.MAIN_HOST, "localhost");
 
-        this.settings.setMainContainer(rt.createMainContainer(mp));
+        this.settings.setMainContainer(rt.createMainContainer(mp));*/
 
+        String host = "192.168.0.104"; // Platform IP
+        int port = 1098; // default-port 1099
+
+        String MTP_hostIP = "192.168.0.104";
+        String MTP_Port = "7778";
+
+        Runtime runtime = Runtime.instance();
+
+        Profile profile = new ProfileImpl(host, port, null, true);
+        profile.setParameter(Profile.MTPS, "jade.mtp.http.MessageTransportProtocol(http://" + MTP_hostIP + ":" + MTP_Port + "/acc)");
+
+        // create container
+        AgentContainer container = runtime.createMainContainer(profile);
+        createAgentAnalyzer(container);
+
+        this.settings.setMainContainer(container);
+    }
+
+    private void createAgentAnalyzer(AgentContainer container) {
+        try {
+            AgentController ac = container.createNewAgent("centralAgent", CentralAgent.class.getName(), null);
+            ac.start();
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        }
     }
 
     //main default executor for merge results
