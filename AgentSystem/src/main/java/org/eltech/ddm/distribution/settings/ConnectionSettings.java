@@ -10,6 +10,13 @@ public class ConnectionSettings extends ASettings implements Serializable {
     private String schemaName;
     private List<String> columnNames;
 
+    public ConnectionSettings(String settingsString) {
+        this.settingsString = settingsString;
+    }
+
+    public ConnectionSettings() {
+    }
+
     public String getUrl() {
         return url;
     }
