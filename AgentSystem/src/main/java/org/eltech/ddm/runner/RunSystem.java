@@ -3,6 +3,9 @@ package org.eltech.ddm.runner;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousBayesModel;
 import org.eltech.ddm.classification.naivebayes.continious.ContinuousNaiveBayesAlgorithm;
+import org.eltech.ddm.distribution.res.ResParser;
+import org.eltech.ddm.distribution.settings.ASettings;
+import org.eltech.ddm.distribution.settings.FileSettings;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.handlers.AgentExecutionEnvironment;
 import org.eltech.ddm.handlers.AgentExecutionEnvironmentSettings;
@@ -14,16 +17,26 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class RunSystem {
 
-    public static String AGENTS_INFO_PATH = "/home/derkach/test/agents_info.csv";
-    public static String TARGET_ATTRIBUTE = "outcome_pregnancy";
-    public static String LOGICAL_DATA = "/home/derkach/test/100mb.csv";
-    public static String[] AGENTS_ARRAY =
-            {"Miner1,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v1.csv",
-            "Miner2,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v2.csv",
-            "Miner3,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v3.csv",
-            "Miner4,192.168.31.192,mage,1099,34561,org.eltech.ddm.agents.AgentMiner,/home/derkach/test/100v4.csv"};
+    public static String AGENTS_INFO_PATH = "E:\\data\\agents_info.csv";
+    public static String TARGET_ATTRIBUTE = "Species";
+    public static String LOGICAL_DATA = "D:\\data\\new_Iris_test.csv";
+    //    public static String[] AGENTS_ARRAY = {"Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv"};
+    public static List<ASettings> AGENTS_ARRAY = new ArrayList<>();
+    public static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+
+    static {
+        // file settings
+        ASettings fileSettings = new FileSettings("Miner1,192.168.0.104,DESKTOP-CE8ADF,1098,7778,org.eltech.ddm.agents.AgentMiner,E:\\data\\data\\iris\\data_Iris.csv");
+        AGENTS_ARRAY.add(fileSettings);
+
+        // sql settings
+    }
 
 
     protected static EMiningAlgorithmSettings miningAlgorithmSettings;
@@ -50,17 +63,27 @@ public class RunSystem {
 
     public static void testDistr() {
 
-        try {
-            createMiningSettings();
-            ContinuousBayesModel resultModel =
-                    (ContinuousBayesModel) createBuidTask(DataDistribution.VERTICAL_DISTRIBUTION, null, AGENTS_ARRAY)
-                            .execute();
+        DataDistribution dataDistribution = computeDataDistribution();
 
+        try {
+            String[] agentsArray = AGENTS_ARRAY.stream()
+                    .map(ASettings::getSettingsString)
+                    .toArray(String[]::new);
+
+            createMiningSettings();
+            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(dataDistribution, null, agentsArray).execute();
+
+            System.out.println("resultModel:");
             System.out.println(resultModel);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static DataDistribution computeDataDistribution() {
+
+        return null;
     }
 
 
@@ -83,6 +106,13 @@ public class RunSystem {
         AgentExecutionEnvironmentSettings executionSettings =
                 new AgentExecutionEnvironmentSettings(dist, agentsArray);
         AgentExecutionEnvironment environment = new AgentExecutionEnvironment(executionSettings);
+        DataDistribution dataDistribution = null;
+
+        while (!atomicBoolean.get());
+
+        dataDistribution = ResParser.readResult();
+        executionSettings.setDataDistribution(dataDistribution);
+
         MiningAlgorithm algorithm = new ContinuousNaiveBayesAlgorithm(miningSettings);
 
         EMiningBuildTask buildTask = new EMiningBuildTask();
