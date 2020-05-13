@@ -90,7 +90,9 @@ public class CentralAgent extends Agent {
                 case 4:
 //                    DataDistribution analyze = analyze(postgreSqlHeaders, fileHeaders);
                     DataDistribution analyze = analyze(fileHeaders);
-//                    saveResult(analyze);
+                    System.out.println(analyze);
+
+                    saveResult(analyze);
                     state = 5;
                     RunSystem.atomicBoolean.set(true);// синхронизация
                     break;
@@ -99,13 +101,7 @@ public class CentralAgent extends Agent {
 
         private void saveResult(DataDistribution analyze) {
             try {
-                File myObj = new File("org\\eltech\\ddm\\distribution\\res\\res.txt");
-                if (myObj.createNewFile()) {
-                    System.out.println("File created: " + myObj.getName());
-                } else {
-                    System.out.println("File already exists.");
-                }
-
+                File myObj = new File("E:\\Programming\\bayes-dxdevelops-agents-impl\\AgentSystem\\src\\main\\java\\org\\eltech\\ddm\\distribution\\res\\res.txt"); //todo перенести в ресурсы
                 FileWriter myWriter = new FileWriter(myObj);
                 myWriter.write(analyze.toString());
                 myWriter.close();
