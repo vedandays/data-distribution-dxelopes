@@ -1,5 +1,7 @@
 package org.eltech.ddm.distribution.settings;
 
+import org.eltech.ddm.distribution.common.FileFormat;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,6 +11,13 @@ public class ConnectionSettings extends ASettings implements Serializable {
     private String password;
     private String schemaName;
     private List<String> columnNames;
+
+    public ConnectionSettings(String settingsString) {
+        this.settingsString = settingsString;
+    }
+
+    public ConnectionSettings() {
+    }
 
     public String getUrl() {
         return url;
