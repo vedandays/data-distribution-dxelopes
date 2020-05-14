@@ -34,8 +34,9 @@ public class RunSystem {
 
     static {
         // file settings
-        ASettings fileSettings = new FileSettings("Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");
-        AGENTS_ARRAY.add(fileSettings);
+//        ASettings fileSettings = new FileSettings("Miner1,192.168.0.106,DESKTOP-DONOSPA,1098,7778,org.eltech.ddm.agents.AgentMiner,F:\\Andrey\\data\\data\\data_Iris.csv");
+//        ASettings fileSettings = new FileSettings("Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");
+//        AGENTS_ARRAY.add(fileSettings);
 
         // sql settings
         ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");

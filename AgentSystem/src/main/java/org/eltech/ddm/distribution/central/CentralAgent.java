@@ -64,7 +64,7 @@ public class CentralAgent extends Agent {
         public void action() {
             switch (state) {
                 case 0:
-                    ConnectionSettings postgresqlSettings = (ConnectionSettings) agentsArray.get(1);
+                    ConnectionSettings postgresqlSettings = (ConnectionSettings) agentsArray.get(0);
                     sendSqlQuery(postgresqlSettings);
                     state = 1;
                     break;
