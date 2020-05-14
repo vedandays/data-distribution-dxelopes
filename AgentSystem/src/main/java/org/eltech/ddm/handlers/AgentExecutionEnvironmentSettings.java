@@ -33,7 +33,7 @@ public class AgentExecutionEnvironmentSettings implements Serializable, Cloneabl
 
     public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution,String AGENTS_INFO_PATH) {
         this.dataDistribution = dataDistribution;
-        agentInfoArrayList = ConfigReader.readFile(AGENTS_INFO_PATH);
+//        agentInfoArrayList = ConfigReader.readFile(AGENTS_INFO_PATH);
     }
 
     public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution, List<ASettings> arrayOfAgents){
