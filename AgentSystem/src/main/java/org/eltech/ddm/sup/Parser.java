@@ -1,17 +1,18 @@
 package org.eltech.ddm.sup;
 
 import org.eltech.ddm.agents.AgentInfo;
+import org.eltech.ddm.distribution.settings.ASettings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Parser {
-    public static ArrayList<AgentInfo> parseArray(String[] arrayOfAgents){
+    public static ArrayList<AgentInfo> parseArray(List<ASettings> arrayOfAgents){
         String splitBySymbol = ",";
 
         ArrayList<AgentInfo> agentInfoArrayList = new ArrayList<>();
 
-
-        for (String agent: arrayOfAgents) {
+        for (ASettings agent : arrayOfAgents) {
             agentInfoArrayList.add(setInAgentInfo(splitBySymbol, agent));
         }
 
@@ -19,9 +20,9 @@ public class Parser {
 
     }
 
-    public static AgentInfo setInAgentInfo(String splitBySymbol, String agent) {
+    public static AgentInfo setInAgentInfo(String splitBySymbol, ASettings agent) {
         String[] lines;
-        lines = agent.split(splitBySymbol);
+        lines = agent.getSettingsString().split(splitBySymbol);
 
         AgentInfo agentInfo = new AgentInfo();
 
@@ -32,6 +33,7 @@ public class Parser {
         agentInfo.setHttpPort(lines[4]);
         agentInfo.setClassName(lines[5]);
         agentInfo.setFilePath(lines[6]);
+        agentInfo.setConnectionSettings(agent);
 
         return agentInfo;
     }
