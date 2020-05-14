@@ -90,7 +90,8 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
                     inputStream = MiningCsvStream.createWithoutInit(agent.getFilePath(), true);
                 } else {
                     ConnectionSettings connectionSettings = (ConnectionSettings) agent.getConnectionSettings();
-                    inputStream = MiningDBStream.createWithoutInit(connectionSettings);
+                    inputStream = MiningDBStream.createWithoutInit(connectionSettings.getUrl(), connectionSettings.getUser(),
+                            connectionSettings.getPassword(), connectionSettings.getColumnNames().get(0));
                 }
                 AgentMiningExecutor executor = getMiningExecutorFactory().create(block, inputStream, agent);
                 execs.add(executor);

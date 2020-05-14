@@ -1,6 +1,5 @@
 package org.eltech.ddm.inputdata.db;
 
-import org.eltech.ddm.distribution.settings.ConnectionSettings;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningDataException;
@@ -28,7 +27,7 @@ public class MiningDBStream extends MiningInputStream {
     //Параметры подключения к серверу
     private String user;
     private String password;
-    //Имя таблицы
+    //Название таблицы
     private String tableName;
 
     //Данные из БД, полученные в результате запроса
@@ -70,11 +69,14 @@ public class MiningDBStream extends MiningInputStream {
 
     /**
      * Конструктор без инициализации
-     * @param connectionSettings настройки для подключения к БД подключения к БД
+     * @param url адрес подключения к БД
+     * @param user имя пользователя для подключения
+     * @param password пароль для подключения
+     * @param tableName имя таблицы, с которой будет происходить работа
      */
-    public static MiningDBStream createWithoutInit(ConnectionSettings connectionSettings) throws MiningException {
-        return new MiningDBStream(connectionSettings.getUrl(), connectionSettings.getUser(),
-                connectionSettings.getPassword(), connectionSettings.getColumnNames().get(0), false);
+    public static MiningDBStream createWithoutInit(String url, String user, String password, String tableName) throws MiningException {
+        return new MiningDBStream(url, user,
+                password, tableName, false);
     }
 
     /**
@@ -94,7 +96,6 @@ public class MiningDBStream extends MiningInputStream {
     }
 
     /**
-     * Инициализация параметров для работы с БД
      * @param url адрес подключения к БД
      * @param user имя пользователя для подключения
      * @param password пароль для подключения

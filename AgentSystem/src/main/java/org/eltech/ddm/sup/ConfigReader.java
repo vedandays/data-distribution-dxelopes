@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /*reading file with agents information */
 
 public class ConfigReader {
-   /* public static  ArrayList<AgentInfo> readFile(String filePath){
+/*    public static  ArrayList<AgentInfo> readFile(String filePath){
         String line;
         String[] lines;
         String splitBySymbol = ",";
