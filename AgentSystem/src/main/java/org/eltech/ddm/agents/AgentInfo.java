@@ -1,5 +1,7 @@
 package org.eltech.ddm.agents;
 
+import org.eltech.ddm.distribution.settings.ASettings;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +21,7 @@ public class AgentInfo implements Serializable {
     private String httpPort;    //MTP/HTTP port -> http://<localhost>:<httPort>
     private String className;   //full path to classname -> <packages>.<className>
     private String filePath;    //path to data on node
+    private ASettings connectionSettings;
 
     public AgentInfo() {
         count++;
@@ -87,6 +90,14 @@ public class AgentInfo implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public ASettings getConnectionSettings() {
+        return connectionSettings;
+    }
+
+    public void setConnectionSettings(ASettings connectionSettings) {
+        this.connectionSettings = connectionSettings;
     }
 
     @Override

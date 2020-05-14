@@ -44,7 +44,7 @@ public class RunSystem {
         postgresqlSettings.setUser("postgres");
         postgresqlSettings.setPassword("qwerty");
         postgresqlSettings.setSchemaName("public");
-        postgresqlSettings.setColumnNames(Arrays.asList("iris"));
+        postgresqlSettings.setColumnNames(Arrays.asList("iris2"));
         AGENTS_ARRAY.add(postgresqlSettings);
     }
 
@@ -76,12 +76,12 @@ public class RunSystem {
         DataDistribution dataDistribution = computeDataDistribution();
 
         try {
-            String[] agentsArray = AGENTS_ARRAY.stream()
+/*            String[] agentsArray = AGENTS_ARRAY.stream()
                     .map(ASettings::getSettingsString)
-                    .toArray(String[]::new);
+                    .toArray(String[]::new);*/
 
             createMiningSettings();
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(dataDistribution, null, agentsArray).execute();
+            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(dataDistribution, null, AGENTS_ARRAY).execute();
 
             System.out.println("resultModel:");
             System.out.println(resultModel);
@@ -112,7 +112,7 @@ public class RunSystem {
         miningSettings.verify();
     }
 
-    private static EMiningBuildTask createBuidTask(DataDistribution dist, String agentsInfoPath, String[] agentsArray) throws MiningException {
+    private static EMiningBuildTask createBuidTask(DataDistribution dist, String agentsInfoPath, List<ASettings>  agentsArray) throws MiningException {
         AgentExecutionEnvironmentSettings executionSettings =
                 new AgentExecutionEnvironmentSettings(dist, agentsArray);
         AgentExecutionEnvironment environment = new AgentExecutionEnvironment(executionSettings);

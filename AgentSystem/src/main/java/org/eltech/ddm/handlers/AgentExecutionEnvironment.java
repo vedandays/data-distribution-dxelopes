@@ -8,9 +8,13 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import org.eltech.ddm.agents.AgentInfo;
 import org.eltech.ddm.distribution.central.CentralAgent;
+import org.eltech.ddm.distribution.settings.ConnectionSettings;
+import org.eltech.ddm.distribution.settings.FileSettings;
 import org.eltech.ddm.environment.ExecutionEnvironment;
 import org.eltech.ddm.handlers.thread.ConcurrencyExecutorFactory;
 import org.eltech.ddm.handlers.thread.ConcurrencyMiningExecutor;
+import org.eltech.ddm.inputdata.MiningInputStream;
+import org.eltech.ddm.inputdata.db.MiningDBStream;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
@@ -81,8 +85,14 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
 
         for (AgentInfo agent : settings.getAgentInfoArrayList()) {
             if (block instanceof MiningLoopVectors) {
-                AgentMiningExecutor executor = getMiningExecutorFactory().create(block,
-                        MiningCsvStream.createWithoutInit(agent.getFilePath(), true), agent);
+                MiningInputStream inputStream;
+                if (agent.getConnectionSettings() instanceof FileSettings) {//создание MiningCsvStream
+                    inputStream = MiningCsvStream.createWithoutInit(agent.getFilePath(), true);
+                } else {
+                    ConnectionSettings connectionSettings = (ConnectionSettings) agent.getConnectionSettings();
+                    inputStream = MiningDBStream.createWithoutInit(connectionSettings);
+                }
+                AgentMiningExecutor executor = getMiningExecutorFactory().create(block, inputStream, agent);
                 execs.add(executor);
             } else if (block instanceof MiningSequence) {
                 execs.add(getNonAgentExecutor(block));

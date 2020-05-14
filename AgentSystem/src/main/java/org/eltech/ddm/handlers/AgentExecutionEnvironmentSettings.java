@@ -1,6 +1,7 @@
 package org.eltech.ddm.handlers;
 
 import jade.wrapper.AgentContainer;
+import org.eltech.ddm.distribution.settings.ASettings;
 import org.eltech.ddm.environment.DataDistribution;
 import org.eltech.ddm.sup.ConfigReader;
 import org.eltech.ddm.agents.AgentInfo;
@@ -8,6 +9,8 @@ import org.eltech.ddm.sup.Parser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Agent Execution environment settings contains list of information about agents,
  * type of data distribution and reference on main container JADE on this node
@@ -33,7 +36,7 @@ public class AgentExecutionEnvironmentSettings implements Serializable, Cloneabl
         agentInfoArrayList = ConfigReader.readFile(AGENTS_INFO_PATH);
     }
 
-    public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution, String[] arrayOfAgents){
+    public AgentExecutionEnvironmentSettings(DataDistribution dataDistribution, List<ASettings> arrayOfAgents){
         this.dataDistribution = dataDistribution;
         agentInfoArrayList = Parser.parseArray(arrayOfAgents);
     }
