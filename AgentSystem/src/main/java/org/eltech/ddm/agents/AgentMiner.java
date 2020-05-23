@@ -11,6 +11,7 @@ import org.eltech.ddm.common.ExecuteJob;
 import org.eltech.ddm.common.ExecuteResult;
 import org.eltech.ddm.common.JobFailed;
 import org.eltech.ddm.inputdata.MiningInputStream;
+import org.eltech.ddm.inputdata.db.MiningDBStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
@@ -152,6 +153,9 @@ public class AgentMiner extends Agent {
 
 
         private void changeMiningSettings(MiningInputStream stream, MiningFunctionSettings settings) throws MiningException {
+            if (stream instanceof MiningDBStream) {
+                stream.open();
+            }
             stream.recognize();
             ELogicalData logicalData = stream.getLogicalData();
             if (settings instanceof ClassificationFunctionSettings) {

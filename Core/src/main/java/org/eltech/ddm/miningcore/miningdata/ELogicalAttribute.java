@@ -177,8 +177,7 @@ public class ELogicalAttribute extends LogicalAttribute  //javax.datamining.data
     @Override
     public boolean equals(Object obj) {
     	ELogicalAttribute la = (ELogicalAttribute)obj;
-    	return attributeType.equals(la.getAttributeType()) &&
-    			getName().equals(la.getName());
+    	return getName().equals(la.getName());
     }
     
     @Override

@@ -37,6 +37,9 @@ public class MiningDBStream extends MiningInputStream {
     //Настройки по преобразованию данных
     private Map<String, FieldDBConvert> allSettings = new HashMap<>();
 
+    public MiningDBStream() {
+    }
+
     /**
      * Конструктор без параметра настроек преобразования данных
      * @param url адрес подключения к БД
@@ -142,7 +145,7 @@ public class MiningDBStream extends MiningInputStream {
     @Override
     public EPhysicalData recognize() throws MiningException {
         logicalData = new ELogicalData();
-        logicalData.setName(tableName);
+//        logicalData.setName(tableName);
 
         try {
             prepareAllSettings(prepareColumns());
@@ -284,6 +287,32 @@ public class MiningDBStream extends MiningInputStream {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getVectorsNumber() {
+        if (values == null) {
+            try {
+                getData();
+            } catch (MiningDataException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int counter = 0;
+        try {
+            while (values.next()) {
+                ++counter;
+            }
+            values.beforeFirst();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counter;
+    }
+
+
+    /**
      * Чтение и преобразование одной ячейки таблицы БД
      * @param la логический атрибут
      * @param entry объект, содержащий название столбца таблицы и настройки преобразования
@@ -381,7 +410,7 @@ public class MiningDBStream extends MiningInputStream {
         Map<String, String> columnsInfo;
 
         try {
-            rs = metaData.getColumns(null, null, tableName, null);
+            rs = metaData.getColumns(null, "public", tableName, null);
             columnsInfo = new HashMap<>();
             while (rs.next()) {
                 columnsInfo.put(rs.getString("COLUMN_NAME"), rs.getString("TYPE_NAME"));
