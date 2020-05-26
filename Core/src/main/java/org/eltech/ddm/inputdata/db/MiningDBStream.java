@@ -37,6 +37,9 @@ public class MiningDBStream extends MiningInputStream {
     //Настройки по преобразованию данных
     private Map<String, FieldDBConvert> allSettings = new HashMap<>();
 
+    public MiningDBStream() {
+    }
+
     /**
      * Конструктор без параметра настроек преобразования данных
      * @param url адрес подключения к БД
@@ -184,6 +187,31 @@ public class MiningDBStream extends MiningInputStream {
         }
 
         return columnsInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getVectorsNumber() {
+        if (values == null) {
+            try {
+                getData();
+            } catch (MiningDataException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int counter = 0;
+        try {
+            while (values.next()) {
+                ++counter;
+            }
+            return values.getFetchSize();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counter;
     }
 
     /**

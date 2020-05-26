@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RunSystem {
 
     public static String AGENTS_INFO_PATH = "E:\\data\\agents_info.csv";
-    public static String TARGET_ATTRIBUTE = "Species";
-    public static String LOGICAL_DATA = "E:\\data\\data\\iris\\new_Iris_test.csv";
+    public static String TARGET_ATTRIBUTE = "atr42";
+    public static String LOGICAL_DATA = "E:\\data\\data\\mydata\\myLogicalData.csv";
     //    public static String[] AGENTS_ARRAY = {"Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv"};
     public static List<ASettings> AGENTS_ARRAY = new ArrayList<>();
     public static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
@@ -35,7 +35,7 @@ public class RunSystem {
     static {
         // file settings
 //        ASettings fileSettings = new FileSettings("Miner1,192.168.0.106,DESKTOP-DONOSPA,1098,7778,org.eltech.ddm.agents.AgentMiner,F:\\Andrey\\data\\data\\data_Iris.csv");
-//        ASettings fileSettings = new FileSettings("Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");
+        ASettings fileSettings = new FileSettings("Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\test1.csv");
 //        AGENTS_ARRAY.add(fileSettings);
 
         // sql settings
@@ -44,7 +44,7 @@ public class RunSystem {
         postgresqlSettings.setUser("postgres");
         postgresqlSettings.setPassword("qwerty");
         postgresqlSettings.setSchemaName("public");
-        postgresqlSettings.setColumnNames(Arrays.asList("iris2"));
+        postgresqlSettings.setColumnNames(Arrays.asList("test_table_42"));
         AGENTS_ARRAY.add(postgresqlSettings);
     }
 
@@ -63,7 +63,6 @@ public class RunSystem {
         testDistr();
     }
 
-
     public static void setUp() throws Exception {
         // Create mining algorithm settings
         miningAlgorithmSettings = new EMiningAlgorithmSettings();
@@ -72,16 +71,9 @@ public class RunSystem {
     }
 
     public static void testDistr() {
-
-        DataDistribution dataDistribution = computeDataDistribution();
-
         try {
-/*            String[] agentsArray = AGENTS_ARRAY.stream()
-                    .map(ASettings::getSettingsString)
-                    .toArray(String[]::new);*/
-
             createMiningSettings();
-            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(dataDistribution, null, AGENTS_ARRAY).execute();
+            ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(null, null, AGENTS_ARRAY).execute();
 
             System.out.println("resultModel:");
             System.out.println(resultModel);
@@ -89,11 +81,6 @@ public class RunSystem {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static DataDistribution computeDataDistribution() {
-
-        return null;
     }
 
 
@@ -116,7 +103,7 @@ public class RunSystem {
         AgentExecutionEnvironmentSettings executionSettings =
                 new AgentExecutionEnvironmentSettings(dist, agentsArray);
         AgentExecutionEnvironment environment = new AgentExecutionEnvironment(executionSettings);
-        DataDistribution dataDistribution = null;
+        DataDistribution dataDistribution;
 
         while (!atomicBoolean.get());
 
@@ -132,6 +119,4 @@ public class RunSystem {
 
         return buildTask;
     }
-
-
 }

@@ -118,10 +118,10 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
 
         this.settings.setMainContainer(rt.createMainContainer(mp));*/
 
-        String host = "192.168.0.104"; // Platform IP
+        String host = "192.168.0.106"; // Platform IP
         int port = 1098; // default-port 1099
 
-        String MTP_hostIP = "192.168.0.104";
+        String MTP_hostIP = "192.168.0.106";
         String MTP_Port = "7778";
 
         Runtime runtime = Runtime.instance();

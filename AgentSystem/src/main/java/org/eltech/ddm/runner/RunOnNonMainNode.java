@@ -1,28 +1,16 @@
 package org.eltech.ddm.runner;
 
-import jade.Boot;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.tools.DummyAgent.DummyAgent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
-import org.eltech.ddm.agents.AgentMiner;
 import org.eltech.ddm.distribution.fileAgent.FileHeaderReaderAgent;
 import org.eltech.ddm.distribution.sqlAgent.SqlDatabaseReaderAgent;
 
 public class RunOnNonMainNode {
     public static void main(String[] args) {
-        // run with arguments
-//        String[] arg = {"-gui","-port", "1098"}; //for tests
-//        new Boot().main(arg);
-
-        /* default run */
-//        String[] a = {"-gui", "-name"," Agent_1"};
-//        new Boot().main(a);
-
-
         String host = "192.168.0.105"; // Platform IP
         int port = 1098; // default-port 1099
 
