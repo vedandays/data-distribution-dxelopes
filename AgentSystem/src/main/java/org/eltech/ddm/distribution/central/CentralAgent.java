@@ -56,7 +56,6 @@ public class CentralAgent extends Agent {
                     ACLMessage msg = blockingReceive();
                     addHeader(headers, msg);
                 }
-                System.out.println("111");
             }
 
             DataDistribution analyze = analyze(headers.toArray(new MetaDataMessage[headers.size()]));
