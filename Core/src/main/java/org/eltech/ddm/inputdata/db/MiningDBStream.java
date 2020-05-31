@@ -144,6 +144,9 @@ public class MiningDBStream extends MiningInputStream {
      */
     @Override
     public EPhysicalData recognize() throws MiningException {
+        if (!isOpen()) {
+            open();
+        }
         logicalData = new ELogicalData();
 //        logicalData.setName(tableName);
 

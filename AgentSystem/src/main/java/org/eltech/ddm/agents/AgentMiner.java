@@ -153,9 +153,6 @@ public class AgentMiner extends Agent {
 
 
         private void changeMiningSettings(MiningInputStream stream, MiningFunctionSettings settings) throws MiningException {
-            if (stream instanceof MiningDBStream) {
-                stream.open();
-            }
             stream.recognize();
             ELogicalData logicalData = stream.getLogicalData();
             if (settings instanceof ClassificationFunctionSettings) {
