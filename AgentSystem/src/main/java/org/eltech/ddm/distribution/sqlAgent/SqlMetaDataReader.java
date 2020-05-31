@@ -1,8 +1,8 @@
 package org.eltech.ddm.distribution.sqlAgent;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.eltech.ddm.distribution.common.HeadersMessage;
-import org.eltech.ddm.distribution.common.IHeadersReader;
+import org.eltech.ddm.distribution.common.MetaDataMessage;
+import org.eltech.ddm.distribution.common.IMetaDataReader;
 import org.eltech.ddm.distribution.settings.ConnectionSettings;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlHeadersReader implements IHeadersReader {
+public class SqlMetaDataReader implements IMetaDataReader {
     private static final String GET_ATTRIBUTES_NAMES = "SELECT column_name "
             + "FROM information_schema.columns "
             + "WHERE table_schema = '%s' AND table_name in(%s) "
@@ -20,12 +20,12 @@ public class SqlHeadersReader implements IHeadersReader {
 
     private ConnectionSettings connectionSettings;
 
-    public SqlHeadersReader(ConnectionSettings connectionSettings) {
+    public SqlMetaDataReader(ConnectionSettings connectionSettings) {
         this.connectionSettings = connectionSettings;
     }
 
     @Override
-    public HeadersMessage readHeaders() {
+    public MetaDataMessage readHeaders() {
         Connection connection = new Connector(connectionSettings).getConnection();
         Statement statement = createStatement(connection);
         List<String> columnNames = connectionSettings.getColumnNames();
@@ -45,7 +45,7 @@ public class SqlHeadersReader implements IHeadersReader {
         throw new RuntimeException("Нужно передать хотя бы одно название таблицы");
     }
 
-    private HeadersMessage executeQuery(Statement statement, String query) {
+    private MetaDataMessage executeQuery(Statement statement, String query) {
         List<String> headerNames = new ArrayList<>();
 
         try {
@@ -57,7 +57,7 @@ public class SqlHeadersReader implements IHeadersReader {
             e.printStackTrace();
         }
 
-        return new HeadersMessage(headerNames);
+        return new MetaDataMessage(headerNames);
     }
 
     private Statement createStatement(Connection connection) {

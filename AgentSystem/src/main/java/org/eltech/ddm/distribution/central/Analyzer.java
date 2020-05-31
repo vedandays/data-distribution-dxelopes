@@ -1,6 +1,6 @@
 package org.eltech.ddm.distribution.central;
 
-import org.eltech.ddm.distribution.common.HeadersMessage;
+import org.eltech.ddm.distribution.common.MetaDataMessage;
 import org.eltech.ddm.environment.DataDistribution;
 
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Analyzer {
 
-    public static DataDistribution analyze(HeadersMessage... messages) {
+    public static DataDistribution analyze(MetaDataMessage... messages) {
         List<List<String>> sortedHeaders = Arrays.stream(messages)
                 .map(m -> m.getHeaderNames()
                         .stream()

@@ -6,14 +6,14 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
-import org.eltech.ddm.distribution.common.HeadersMessage;
-import org.eltech.ddm.distribution.common.IHeadersReader;
+import org.eltech.ddm.distribution.common.MetaDataMessage;
+import org.eltech.ddm.distribution.common.IMetaDataReader;
 import org.eltech.ddm.distribution.settings.FileSettings;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class FileHeaderReaderAgent extends Agent {
+public class FileMetaDataReaderAgent extends Agent {
     @Override
     protected void setup() {
         System.out.println("Agent " + this.getAID().getLocalName() + " is started");
@@ -45,13 +45,13 @@ public class FileHeaderReaderAgent extends Agent {
                     throw new RuntimeException(e);
                 }
 
-                IHeadersReader reader = null;
+                IMetaDataReader reader = null;
                 switch (fileSettings.getFileFormat()) {
                     case CSV:
-                        reader = new CsvHeadersReader(fileSettings.getFilePath());
+                        reader = new CsvMetaDataReader(fileSettings.getFilePath());
                         break;
                     case CSVH:
-                        reader = new CsvHeadersReader(fileSettings.getFilePath());
+                        reader = new CsvMetaDataReader(fileSettings.getFilePath());
                         break;
                     case JSON:
                         // todo reader for json
@@ -59,13 +59,13 @@ public class FileHeaderReaderAgent extends Agent {
                 }
 
                 if (Objects.nonNull(reader)) {
-                    HeadersMessage headersMessage = reader.readHeaders();
-                    reply(headersMessage, msg);
+                    MetaDataMessage metaDataMessage = reader.readHeaders();
+                    reply(metaDataMessage, msg);
                 }
             }
         }
 
-        private void reply(HeadersMessage content, ACLMessage msg) { // todo ved вынести в общий класс
+        private void reply(MetaDataMessage content, ACLMessage msg) { // todo ved вынести в общий класс
             ACLMessage reply = new ACLMessage(ACLMessage.REQUEST);
 
             AID receiverId = new AID(msg.getSender().getName(), AID.ISGUID);
@@ -79,7 +79,7 @@ public class FileHeaderReaderAgent extends Agent {
             send(reply);
         }
 
-        private void setContent(ACLMessage msg, HeadersMessage content) { // todo ved вынести в общий класс
+        private void setContent(ACLMessage msg, MetaDataMessage content) { // todo ved вынести в общий класс
             try {
                 msg.setContentObject(content);
             } catch (IOException e) {

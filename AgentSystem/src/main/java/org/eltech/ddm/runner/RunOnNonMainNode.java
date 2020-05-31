@@ -6,8 +6,8 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
-import org.eltech.ddm.distribution.fileAgent.FileHeaderReaderAgent;
-import org.eltech.ddm.distribution.sqlAgent.SqlDatabaseReaderAgent;
+import org.eltech.ddm.distribution.fileAgent.FileMetaDataReaderAgent;
+import org.eltech.ddm.distribution.sqlAgent.SqlMetaDatabaseAgent;
 
 public class RunOnNonMainNode {
     public static void main(String[] args) {
@@ -27,10 +27,10 @@ public class RunOnNonMainNode {
         AgentContainer container = runtime.createMainContainer(profile);
 
         try {
-            AgentController fileHeaderReaderAgentController = container.createNewAgent("fileHeaderReaderAgent", FileHeaderReaderAgent.class.getName(), null);
+            AgentController fileHeaderReaderAgentController = container.createNewAgent("fileHeaderReaderAgent", FileMetaDataReaderAgent.class.getName(), null);
             fileHeaderReaderAgentController.start();
 
-            AgentController sqlDatabaseReaderAgentController = container.createNewAgent("sqlDatabaseReaderAgent", SqlDatabaseReaderAgent.class.getName(), null);
+            AgentController sqlDatabaseReaderAgentController = container.createNewAgent("sqlDatabaseReaderAgent", SqlMetaDatabaseAgent.class.getName(), null);
             sqlDatabaseReaderAgentController.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();

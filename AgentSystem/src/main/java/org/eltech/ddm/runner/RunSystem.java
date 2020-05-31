@@ -28,24 +28,23 @@ public class RunSystem {
     public static String AGENTS_INFO_PATH = "E:\\data\\agents_info.csv";
     public static String TARGET_ATTRIBUTE = "atr42";
     public static String LOGICAL_DATA = "E:\\data\\data\\mydata\\myLogicalData.csv";
-    //    public static String[] AGENTS_ARRAY = {"Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv"};
     public static List<ASettings> AGENTS_ARRAY = new ArrayList<>();
     public static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 
     static {
         // file settings
-//        ASettings fileSettings = new FileSettings("Miner1,192.168.0.106,DESKTOP-DONOSPA,1098,7778,org.eltech.ddm.agents.AgentMiner,F:\\Andrey\\data\\data\\data_Iris.csv");
         ASettings fileSettings = new FileSettings("Miner1,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\test1.csv");
-//        AGENTS_ARRAY.add(fileSettings);
+        AGENTS_ARRAY.add(fileSettings);
 
         // sql settings
-        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,D:\\data\\data_Iris.csv");
+//        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.104,DESKTOP-DONOSPA,1098,7778,org.eltech.ddm.agents.AgentMiner,null");
+        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,null");
         postgresqlSettings.setUrl("jdbc:postgresql://localhost:5432/kddcup");
         postgresqlSettings.setUser("postgres");
         postgresqlSettings.setPassword("qwerty");
         postgresqlSettings.setSchemaName("public");
         postgresqlSettings.setColumnNames(Arrays.asList("test_table_42"));
-        AGENTS_ARRAY.add(postgresqlSettings);
+//        AGENTS_ARRAY.add(postgresqlSettings);
     }
 
 

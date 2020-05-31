@@ -111,13 +111,6 @@ public class AgentExecutionEnvironment extends ExecutionEnvironment<AgentMiningE
 
     //initialization Jade Platform and setting main container to settings
     private void initJadePlatform() {
-/*        Runtime rt = Runtime.instance();
-        rt.setCloseVM(true);
-        Profile mp = new ProfileImpl();
-        mp.setParameter(ProfileImpl.MAIN_HOST, "localhost");
-
-        this.settings.setMainContainer(rt.createMainContainer(mp));*/
-
         String host = "192.168.0.106"; // Platform IP
         int port = 1098; // default-port 1099
 
