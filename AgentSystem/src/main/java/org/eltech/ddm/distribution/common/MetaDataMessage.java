@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeadersMessage implements Serializable {
+public class MetaDataMessage implements Serializable {
     private List<String> headerNames = new ArrayList<>();
 
-    public HeadersMessage() {
+    public MetaDataMessage() {
     }
 
-    public HeadersMessage(List<String> headerNames) {
+    public MetaDataMessage(List<String> headerNames) {
         this.headerNames = headerNames;
     }
 

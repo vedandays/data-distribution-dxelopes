@@ -6,14 +6,14 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
-import org.eltech.ddm.distribution.common.HeadersMessage;
-import org.eltech.ddm.distribution.common.IHeadersReader;
+import org.eltech.ddm.distribution.common.MetaDataMessage;
+import org.eltech.ddm.distribution.common.IMetaDataReader;
 import org.eltech.ddm.distribution.settings.ConnectionSettings;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class SqlDatabaseReaderAgent extends Agent {
+public class SqlMetaDatabaseAgent extends Agent {
     @Override
     protected void setup() {
         System.out.println("Agent " + this.getAID().getLocalName() + " is started");
@@ -38,18 +38,18 @@ public class SqlDatabaseReaderAgent extends Agent {
             if (Objects.nonNull(msg)) {
                 try {
                     ConnectionSettings connectionSettings = (ConnectionSettings) msg.getContentObject();
-                    IHeadersReader reader = new SqlHeadersReader(connectionSettings);
-                    HeadersMessage headersMessage = reader.readHeaders();
+                    IMetaDataReader reader = new SqlMetaDataReader(connectionSettings);
+                    MetaDataMessage metaDataMessage = reader.readHeaders();
                     System.out.println(myAgent.getName() + ": headers:");
-                    headersMessage.getHeaderNames().forEach(System.out::println);
-                    reply(headersMessage, msg);
+                    metaDataMessage.getHeaderNames().forEach(System.out::println);
+                    reply(metaDataMessage, msg);
                 } catch (UnreadableException e) {
                     e.printStackTrace();
                 }
             }
         }
 
-        private void reply(HeadersMessage content, ACLMessage msg) {
+        private void reply(MetaDataMessage content, ACLMessage msg) {
             AID receiverId = new AID(msg.getSender().getName(), AID.ISGUID);
             receiverId.addAddresses(msg.getSender().getAddressesArray()[0]);
 
@@ -61,7 +61,7 @@ public class SqlDatabaseReaderAgent extends Agent {
             send(reply);
         }
 
-        private void setContent(ACLMessage msg, HeadersMessage content) {
+        private void setContent(ACLMessage msg, MetaDataMessage content) {
             try {
                 msg.setContentObject(content);
             } catch (IOException e) {

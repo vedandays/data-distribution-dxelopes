@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class ResParser {
     public static DataDistribution readResult(){
         try {
-            File myObj = new File("D:\\diplom\\dataDistribution-develops-agents-impl\\AgentSystem\\src\\main\\java\\org\\eltech\\ddm\\distribution\\res\\res.txt"); //todo перенести в resources
+            File myObj = new File("E:\\Programming\\bayes-dxdevelops-agents-impl\\AgentSystem\\src\\main\\java\\org\\eltech\\ddm\\distribution\\res\\res.txt"); //todo перенести в resources
             Scanner myReader = new Scanner(myObj);
             String res = myReader.nextLine();
             myReader.close();

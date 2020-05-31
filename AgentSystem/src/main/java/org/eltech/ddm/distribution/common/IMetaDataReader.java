@@ -1,11 +1,11 @@
 package org.eltech.ddm.distribution.common;
 
-public interface IHeadersReader {
+public interface IMetaDataReader {
 
     /**
      * Считать названия столбцов источника.
      *
      * @return список столбцов источника.
      */
-    HeadersMessage readHeaders();
+    MetaDataMessage readHeaders();
 }

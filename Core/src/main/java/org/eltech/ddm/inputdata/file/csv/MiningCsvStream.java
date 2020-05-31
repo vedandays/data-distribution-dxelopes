@@ -206,6 +206,7 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
                 ELogicalAttribute la = new ELogicalAttribute(attrName, AttributeType.numerical);
                 PhysicalAttribute pa = new PhysicalAttribute(attrName, AttributeType.numerical, AttributeDataType.doubleType);
                 EDirectAttributeAssignment da = new EDirectAttributeAssignment();
+                System.out.println("la = " + la.getName());
                 logicalData.addAttribute(la);
                 physicalData.addAttribute(pa);
                 da.addLogicalAttribute(la);
