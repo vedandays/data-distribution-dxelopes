@@ -37,14 +37,13 @@ public class RunSystem {
         AGENTS_ARRAY.add(fileSettings);
 
         // sql settings
-//        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.104,DESKTOP-DONOSPA,1098,7778,org.eltech.ddm.agents.AgentMiner,null");
-        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.105,DESKTOP-E233JR5,1098,7778,org.eltech.ddm.agents.AgentMiner,null");
+        ConnectionSettings postgresqlSettings = new ConnectionSettings("Miner2,192.168.0.104,DESKTOP-DONOSPA,1098,7778,org.eltech.ddm.agents.AgentMiner,null");
         postgresqlSettings.setUrl("jdbc:postgresql://localhost:5432/kddcup");
         postgresqlSettings.setUser("postgres");
         postgresqlSettings.setPassword("qwerty");
         postgresqlSettings.setSchemaName("public");
         postgresqlSettings.setColumnNames(Arrays.asList("test_table_42"));
-//        AGENTS_ARRAY.add(postgresqlSettings);
+        AGENTS_ARRAY.add(postgresqlSettings);
     }
 
 
